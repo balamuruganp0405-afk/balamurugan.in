@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balamurugan P | local Admin Dashboard</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Quill Rich Text Editor Styles -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #0B0F19;
+      --bg-card: #151F32;
+      --bg-input: #1F2E47;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --primary: #6366F1;
+      --primary-hover: #4F46E5;
+      --success: #10B981;
+      --danger: #EF4444;
+      --border: #2D3D5A;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-inter);
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-family: var(--font-outfit);
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 2rem;
+    }
+
+    h1 span {
+      color: var(--primary);
+    }
+
+    .badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 968px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .card-title {
+      font-family: var(--font-outfit);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      color: var(--text-main);
+      font-family: var(--font-inter);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .editor-container {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border) !important;
+      border-radius: 0 0 6px 6px;
+      color: var(--text-main);
+      min-height: 350px;
+    }
+
+    .ql-toolbar {
+      background-color: #1A2536;
+      border: 1px solid var(--border) !important;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .ql-stroke {
+      stroke: var(--text-muted) !important;
+    }
+
+    .ql-fill {
+      fill: var(--text-muted) !important;
+    }
+
+    .ql-picker {
+      color: var(--text-muted) !important;
+    }
+
+    .ql-picker-options {
+      background-color: var(--bg-card) !important;
+      border-color: var(--border) !important;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: var(--font-outfit);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-danger:hover {
+      background: #D32F2F;
+    }
+
+    .file-upload-box {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      background-color: rgba(31, 46, 71, 0.25);
+    }
+
+    .file-upload-box:hover {
+      border-color: var(--primary);
+    }
+
+    .file-upload-preview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 6px;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .blogs-list {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .blog-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .blog-item:last-child {
+      border-bottom: none;
+    }
+
+    .blog-item-title {
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .blog-item-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    #publish-status {
+      display: none;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .status-success {
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: #34D399;
+    }
+
+    .status-error {
+      background-color: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #F87171;
+    }
+
+    .status-loading {
+      background-color: rgba(99, 102, 241, 0.15);
+      border: 1px solid var(--primary);
+      color: #818CF8;
+    }
+
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border-left-color: var(--primary);
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Balamurugan<span>.P</span> Local CMS</h1>
+      <span class="badge">Offline Developer Server</span>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Create Blog Card -->
+      <div>
+        <div id="publish-status"></div>
+
+        <div class="card">
+          <div class="card-title">Create New Blog Post</div>
+          
+          <div class="form-group">
+            <label for="title">Blog Title</label>
+            <input type="text" id="title" placeholder="e.g. 25 Google Discover Optimization Tips to Increase Website Traffic in 2026" required>
+          </div>
+
+          <div class="form-group">
+            <label for="slug">URL Slug</label>
+            <input type="text" id="slug" placeholder="e.g. google-discover-optimization-tips" required>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Meta Description</label>
+            <textarea id="description" rows="3" placeholder="Provide a brief summary for search engines (approx 150-160 characters)" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option value="seo">SEO</option>
+              <option value="ads">Paid Search & Ads</option>
+              <option value="design">Web Design</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="readtime">Read Time</label>
+            <input type="text" id="readtime" value="15 min read" required>
+          </div>
+
+          <div class="form-group">
+            <label>Featured Image</label>
+            <div class="file-upload-box" id="dropzone">
+              <p id="upload-prompt">Click or drag image here to upload</p>
+              <input type="file" id="image-input" accept="image/*" style="display: none;">
+              <img id="image-preview" class="file-upload-preview" alt="Featured Image Preview">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Article Body Content</label>
+            <!-- Quill toolbar will be attached here -->
+            <div id="editor-toolbar"></div>
+            <!-- Quill editor element -->
+            <div id="editor-content" class="editor-container"></div>
+          </div>
+
+          <button class="btn btn-primary" id="publish-btn">Publish Blog Post</button>
+        </div>
+      </div>
+
+      <!-- Right: Published Blogs List -->
+      <div>
+        <div class="card">
+          <div class="card-title">Published Articles <span id="blogs-count" class="badge">0</span></div>
+          <div class="blogs-list" id="blogs-container">
+            <!-- Dynamic list of blogs -->
+            <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading published articles...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quill Rich Text Editor Script -->
+  <script>
+    // Initialize Quill Editor
+    const quill = new Quill('#editor-content', {
+      modules: {
+        toolbar: [
+          [{ 'header': [2, 3, 4, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          ['link', 'blockquote', 'code-block'],
+          ['clean']
+        ]
+      },
+      placeholder: 'Write your blog post content here...',
+      theme: 'snow'
+    });
+
+    // Auto-generate slug from Title
+    const titleInput = document.getElementById('title');
+    const slugInput = document.getElementById('slug');
+
+    titleInput.addEventListener('input', () => {
+      slugInput.value = titleInput.value
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // remove invalid characters
+        .replace(/\s+/g, '-')         // collapse whitespace and replace by -
+        .replace(/-+/g, '-');         // collapse dashes
+    });
+
+    // Image Upload Handling
+    const dropzone = document.getElementById('dropzone');
+    const imageInput = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const uploadPrompt = document.getElementById('upload-prompt');
+    let base64Image = '';
+
+    dropzone.addEventListener('click', () => imageInput.click());
+
+    imageInput.addEventListener('change', handleImageSelect);
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--primary)';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.style.borderColor = 'var(--border)';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--border)';
+      if (e.dataTransfer.files.length > 0) {
+        imageInput.files = e.dataTransfer.files;
+        handleImageSelect();
+      }
+    });
+
+    function handleImageSelect() {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Image = e.target.result;
+          imagePreview.src = base64Image;
+          imagePreview.style.display = 'block';
+          uploadPrompt.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Load Existing Blogs list
+    async function loadBlogs() {
+      const container = document.getElementById('blogs-container');
+      const countBadge = document.getElementById('blogs-count');
+      try {
+        const res = await fetch('/api/blogs');
+        if (!res.ok) throw new Error('Failed to fetch blogs');
+        const blogs = await res.json();
+        
+        countBadge.textContent = blogs.length;
+        
+        if (blogs.length === 0) {
+          container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No blogs found.</p>';
+          return;
+        }
+
+        container.innerHTML = blogs.map(blog => `
+          <div class="blog-item" data-href="${blog.Href}">
+            <div>
+              <div class="blog-item-title">${blog.Title}</div>
+              <div class="blog-item-meta">Category: ${blog.Category.toUpperCase()} | Date: ${blog.Date}</div>
+            </div>
+            <div>
+              <button class="btn btn-danger" onclick="deleteBlog('${blog.Href}')">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        container.innerHTML = `<p style="color: var(--danger); text-align: center; padding: 2rem;">Error: ${err.message}</p>`;
+      }
+    }
+
+    // Delete Blog Post
+    async function deleteBlog(href) {
+      if (!confirm('Are you sure you want to delete this blog post? This will delete the HTML page and remove it from listings.')) {
+        return;
+      }
+      
+      const statusDiv = document.getElementById('publish-status');
+      statusDiv.className = 'status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Deleting blog post and updating website...';
+      statusDiv.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ href: href })
+        });
+        
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Deletion failed');
+        
+        statusDiv.className = 'status-success';
+        statusDiv.textContent = 'Blog post successfully deleted!';
+        loadBlogs();
+        
+        setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
+      } catch (err) {
+        statusDiv.className = 'status-error';
+        statusDiv.textContent = 'Error: ' + err.message;
+      }
+    }
+
+    // Publish Blog Post
+    const publishBtn = document.getElementById('publish-btn');
+    publishBtn.addEventListener('click', async () => {
+      const title = titleInput.value.trim();
+      const slug = slugInput.value.trim();
+      const description = document.getElementById('description').value.trim();
+      const category = document.getElementById('category').value;
+      const readtime = document.getElementById('readtime').value.trim();
+      const content = quill.root.innerHTML;
+
+      const statusDiv = document.getElementById('publish-status');
+
+      if (!title || !slug || !description || !content) {
+        statusDiv.className = 'status-error';
+        statusDiv.textContent = 'Please fill out all required fields.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      if (!base64Image) {
+        statusDiv.className = 'status-error';
+        statusDiv.textContent = 'Please upload a featured image.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      statusDiv.className = 'status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Publishing blog and running compiler pipeline (this takes about 10 seconds)...';
+      statusDiv.style.display = 'block';
+      publishBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: title,
+            slug: slug,
+            description: description,
+            category: category,
+            readtime: readtime,
+            image: base64Image,
+            content: content
+          })
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Publishing failed');
+
+        statusDiv.className = 'status-success';
+        statusDiv.textContent = 'Blog post successfully published and compiled!';
+        
+        // Reset form
+        titleInput.value = '';
+        slugInput.value = '';
+        document.getElementById('description').value = '';
+        quill.root.innerHTML = '';
+        imagePreview.style.display = 'none';
+        uploadPrompt.style.display = 'block';
+        base64Image = '';
+
+        loadBlogs();
+      } catch (err) {
+        statusDiv.className = 'status-error';
+        statusDiv.textContent = 'Error: ' + err.message;
+      } finally {
+        publishBtn.disabled = false;
+      }
+    });
+
+    // Initial Load
+    loadBlogs();
+  </script>
+</body>
+</html>

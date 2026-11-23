@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Balamurugan P | Live Admin CMS</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Quill Rich Text Editor Styles -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #0B0F19;
+      --bg-card: #151F32;
+      --bg-input: #1F2E47;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --primary: #6366F1;
+      --primary-hover: #4F46E5;
+      --success: #10B981;
+      --danger: #EF4444;
+      --border: #2D3D5A;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-inter);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* LOGIN SCREEN STYLES */
+    .login-container {
+      max-width: 420px;
+      width: 100%;
+      margin: auto;
+      padding: 2.5rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-logo {
+      font-family: var(--font-outfit);
+      font-weight: 700;
+      font-size: 1.75rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-logo span { color: var(--primary); }
+    .login-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.5rem; color: var(--text-muted); text-align: center; }
+
+    /* CMS INTERFACE STYLES */
+    .cms-container {
+      display: none;
+      flex: 1;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 { font-family: var(--font-outfit); font-weight: 700; font-size: 1.8rem; }
+    h1 span { color: var(--primary); }
+
+    .header-actions { display: flex; gap: 1rem; align-items: center; }
+    .badge { background: rgba(16, 185, 129, 0.15); color: var(--success); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; }
+
+    .grid { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+    @media (max-width: 968px) { .grid { grid-template-columns: 1fr; } }
+
+    .sidebar { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: fit-content; }
+    .sidebar-title { font-family: var(--font-outfit); font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .menu-list { list-style: none; }
+    .menu-item { padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500; margin-bottom: 0.5rem; transition: background-color 0.2s, color 0.2s; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
+    .menu-item:hover, .menu-item.active { background-color: var(--bg-input); color: var(--text-main); }
+    .menu-item.active { border-left: 3px solid var(--primary); }
+
+    .main-workspace { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+
+    /* Forms */
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-muted); font-size: 0.9rem; }
+    input[type="text"], input[type="email"], input[type="password"], textarea, select {
+      width: 100%; background-color: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text-main); font-family: var(--font-inter); font-size: 0.95rem; transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); }
+
+    /* Tabs */
+    .tabs-nav { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .tab-btn { background: none; border: none; color: var(--text-muted); font-family: var(--font-outfit); font-weight: 600; font-size: 0.95rem; padding: 0.5rem 1rem; cursor: pointer; border-radius: 4px; transition: background-color 0.2s, color 0.2s; }
+    .tab-btn.active { background-color: var(--primary); color: white; }
+
+    .editor-container { background-color: var(--bg-input); border: 1px solid var(--border) !important; border-radius: 0 0 6px 6px; color: var(--text-main); min-height: 400px; }
+    .ql-toolbar { background-color: #1A2536; border: 1px solid var(--border) !important; border-radius: 6px 6px 0 0; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; font-family: var(--font-outfit); cursor: pointer; transition: all 0.2s; border: none; font-size: 1rem; text-decoration: none; }
+    .btn-block { width: 100%; }
+    .btn-primary { background-color: var(--primary); color: white; }
+    .btn-primary:hover { background-color: var(--primary-hover); }
+    .btn-secondary { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-secondary:hover { background-color: var(--bg-input); }
+    .btn-danger { background-color: var(--danger); color: white; }
+    .btn-danger:hover { background: #D32F2F; }
+
+    .file-upload-box { border: 2px dashed var(--border); border-radius: 8px; padding: 1.5rem; text-align: center; cursor: pointer; background-color: rgba(31, 46, 71, 0.25); }
+    .file-upload-box:hover { border-color: var(--primary); }
+    .file-upload-preview { max-width: 100%; max-height: 150px; border-radius: 6px; margin-top: 1rem; display: none; }
+
+    .status-box { display: none; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-weight: 500; }
+    .status-success { background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #34D399; }
+    .status-error { background-color: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #F87171; }
+    .status-loading { background-color: rgba(99, 102, 241, 0.15); border: 1px solid var(--primary); color: #818CF8; }
+
+    .spinner { border: 3px solid rgba(255, 255, 255, 0.1); width: 20px; height: 20px; border-radius: 50%; border-left-color: var(--primary); animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .forgot-link { color: var(--primary); text-decoration: none; font-size: 0.85rem; cursor: pointer; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* Modal Styles */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-content { background: var(--bg-card); border: 1px solid var(--border); padding: 2.5rem; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; }
+    .close-btn { margin-top: 1.5rem; }
+
+    .block-editor-item { background: rgba(31, 46, 71, 0.2); border: 1px solid var(--border); padding: 1.25rem; border-radius: 8px; margin-bottom: 1.25rem; }
+    .block-editor-label { font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+    
+    .checkbox-group { display: flex; gap: 1.5rem; margin-bottom: 1rem; }
+    .checkbox-item { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .checkbox-item input { width: 18px; height: 18px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div class="login-container" id="login-overlay">
+    <div class="login-logo">Balamurugan<span>.P</span></div>
+    <div class="login-title">Live Website Administrator Login</div>
+    
+    <div id="login-status" class="status-box"></div>
+
+    <div class="form-group">
+      <label for="login-email">Email Address</label>
+      <input type="email" id="login-email" placeholder="enter your email" required>
+    </div>
+
+    <div class="form-group">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <label style="margin-bottom: 0;">Password</label>
+        <span class="forgot-link" id="forgot-btn">Forgot Password?</span>
+      </div>
+      <input type="password" id="login-password" placeholder="enter your password" required>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="login-submit-btn">Login Securely</button>
+  </div>
+
+  <!-- FORGOT PASSWORD MODAL -->
+  <div class="modal" id="forgot-modal">
+    <div class="modal-content">
+      <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">Reset Password</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your registered email address and we'll send you link to reset password.</p>
+      <div class="form-group">
+        <input type="email" id="forgot-email" placeholder="balamuruganp0405@gmail.com">
+      </div>
+      <button class="btn btn-primary btn-block" id="forgot-send-btn">Send Reset Link</button>
+      <button class="btn btn-secondary btn-block close-btn" id="forgot-close-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MAIN CMS WORKSPACE -->
+  <div class="cms-container" id="cms-workspace">
+    <header>
+      <h1>Balamurugan<span>.P</span> Admin Panel</h1>
+      <div class="header-actions">
+        <span class="badge">Live Connection</span>
+        <button class="btn btn-secondary" style="padding: 0.5rem 1rem;" id="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Navigation Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-title">Create Page</div>
+        <ul class="menu-list" style="margin-bottom: 1.5rem;">
+          <li class="menu-item active" id="menu-new-page">Create New Page</li>
+        </ul>
+        
+        <div class="sidebar-title">Manage Content</div>
+        <ul class="menu-list" style="margin-bottom: 1.5rem;">
+          <li class="menu-item" id="menu-edit-blogs">Edit Blog Posts</li>
+          <li class="menu-item" id="menu-edit-services">Edit Service Pages</li>
+          <li class="menu-item" id="menu-edit-general">Edit General Pages</li>
+        </ul>
+
+        <div class="sidebar-title">Global Library</div>
+        <ul class="menu-list">
+          <li class="menu-item" id="menu-faq-library">Manage FAQ Library</li>
+        </ul>
+      </aside>
+
+      <!-- Right: Main Editor Area -->
+      <main class="main-workspace">
+        <div id="cms-status" class="status-box"></div>
+
+        <!-- WORKSPACE: Page Editor (Used dynamically by all side tabs) -->
+        <div id="editor-workspace-view">
+          <div class="flex-row">
+            <h2 id="workspace-title" style="font-family: var(--font-outfit);">Create a New Page</h2>
+            <div id="page-selector-container" style="display: none; width: 300px;">
+              <select id="select-active-page">
+                <option value="">-- Select Page to Edit --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Page Editing Workspace Tabs -->
+          <div class="tabs-nav" id="editor-tabs-bar" style="display: none;">
+            <button class="tab-btn active" id="tab-seo-settings">SEO Metadata</button>
+            <button class="tab-btn" id="tab-page-content">Page Content</button>
+            <button class="tab-btn" id="tab-blog-faqs" style="display: none;">Blog FAQs</button>
+            <button class="tab-btn" id="tab-raw-html">Raw HTML</button>
+          </div>
+
+          <div id="editor-fields-box">
+            
+            <!-- SECTION 1: Page Type Selection (Only for Create New Page) -->
+            <div id="group-page-type" class="form-group">
+              <label for="new-page-type">Select Page Type</label>
+              <select id="new-page-type">
+                <option value="blog">Blog Post (Using Article Template)</option>
+                <option value="service">Service Landing Page (Using Service Layout)</option>
+                <option value="general">General Inner Page (Not in main menu)</option>
+              </select>
+            </div>
+
+            <!-- SECTION 2: SEO Settings Tab -->
+            <div id="tab-panel-seo">
+              <div class="form-group">
+                <label for="meta-title">Page Meta Title</label>
+                <input type="text" id="meta-title" placeholder="Meta Title (Max 60 characters recommended)">
+              </div>
+
+              <div class="form-group">
+                <label for="meta-description">Page Meta Description</label>
+                <textarea id="meta-description" rows="3" placeholder="Meta Description (150-160 characters recommended)"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="page-slug">URL Slug (Filename)</label>
+                <input type="text" id="page-slug" placeholder="e.g. google-discover-optimization-tips">
+              </div>
+
+              <div class="form-group">
+                <label for="canonical-url">Canonical Link</label>
+                <input type="text" id="canonical-url" placeholder="e.g. https://balamurugan.in/google-discover-optimization-tips.html">
+              </div>
+
+              <div class="form-group">
+                <label>Search Engine Directives</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-item">
+                    <input type="checkbox" id="check-noindex">
+                    noindex (Hide this page from search results)
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" id="check-nofollow">
+                    nofollow (Don't follow links on this page)
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Blog-specific details -->
+              <div id="blog-meta-details">
+                <div class="form-group">
+                  <label for="blog-category">Blog Category</label>
+                  <select id="blog-category">
+                    <option value="seo">SEO</option>
+                    <option value="ads">Paid Search & Ads</option>
+                    <option value="design">Web Design</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="blog-readtime">Blog Read Time</label>
+                  <input type="text" id="blog-readtime" value="15 min read">
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 3: Content Editing Tab -->
+            <div id="tab-panel-content" style="display: none;">
+              <!-- 3A: Featured Image Block -->
+              <div class="form-group" id="image-upload-wrapper">
+                <label>Featured Image / Banner</label>
+                <div class="file-upload-box" id="dropzone">
+                  <p id="upload-prompt">Click or drag image here to upload</p>
+                  <input type="file" id="image-input" accept="image/*" style="display: none;">
+                  <img id="image-preview" class="file-upload-preview" alt="Featured Image Preview">
+                </div>
+              </div>
+
+              <!-- 3B: Quill Rich Text Editor (Mainly for Blogs/Create Mode) -->
+              <div class="form-group" id="quill-editor-wrapper">
+                <label>Article / Main Body Content</label>
+                <div id="editor-toolbar"></div>
+                <div id="editor-content" class="editor-container"></div>
+              </div>
+
+              <!-- 3C: Block-by-Block Content Editor (Mainly for Services/General pages) -->
+              <div class="form-group" id="block-editor-wrapper" style="display: none;">
+                <label style="font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Edit Page Text Blocks (Keeps Design Intact)</label>
+                <div id="block-editor-list">
+                  <!-- Dynamically populated text elements -->
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 4: Raw HTML Editor Tab -->
+            <div id="tab-panel-raw-html" style="display: none;">
+              <div class="form-group">
+                <label for="raw-html-editor">Source HTML Editor (Advanced Users)</label>
+                <textarea id="raw-html-editor" style="font-family: monospace; min-height: 500px; font-size: 0.9rem; line-height: 1.4; background-color: #0A0F1D; border-color: var(--border);"></textarea>
+              </div>
+            </div>
+
+            <!-- SECTION 5: Blog FAQs Editor Tab -->
+            <div id="tab-panel-faqs" style="display: none;">
+              <div class="form-group">
+                <label style="font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>Edit Blog FAQs</span>
+                  <button class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;" id="add-faq-item-btn">+ Add FAQ Item</button>
+                </label>
+                <div id="faq-editor-list">
+                  <!-- Dynamically populated FAQ inputs -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Main Actions -->
+          <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button class="btn btn-primary" id="save-btn" style="flex: 1;">Publish / Save Page</button>
+            <button class="btn btn-danger" id="delete-page-btn" style="display: none;">Delete Page</button>
+          </div>
+
+        </div>
+
+        <!-- WORKSPACE: FAQ Library Manager -->
+        <div id="faq-library-workspace-view" style="display: none;">
+          <div class="flex-row" style="margin-bottom: 2rem;">
+            <h2 style="font-family: var(--font-outfit);">Global FAQ Library</h2>
+            <button class="btn btn-primary" id="faq-create-new-set-btn">+ Create FAQ Set</button>
+          </div>
+
+          <!-- List of existing FAQ sets -->
+          <div id="faq-library-sets-list">
+            <!-- Dynamically populated list of FAQ sets -->
+          </div>
+
+          <!-- FAQ Set Creator/Editor Form -->
+          <div id="faq-set-edit-form" style="display: none; background: rgba(31, 46, 71, 0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem;">
+            <h3 id="faq-form-title" style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">Create FAQ Set</h3>
+            
+            <div class="form-group">
+              <label for="faq-set-title-input">FAQ Set Title</label>
+              <input type="text" id="faq-set-title-input" placeholder="e.g. Keyword Research FAQs">
+            </div>
+
+            <div class="form-group">
+              <label for="faq-set-id-input">Unique ID / Slug (For shortcode, e.g. [FAQ-keyword-research])</label>
+              <input type="text" id="faq-set-id-input" placeholder="e.g. keyword-research">
+            </div>
+
+            <div class="form-group" style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+              <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span>Accordion Items</span>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.85rem;" id="faq-set-add-row-btn">+ Add Item</button>
+              </label>
+              
+              <div id="faq-set-rows-container">
+                <!-- Dynamically populated question/answer input pairs -->
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+              <button class="btn btn-primary" id="faq-set-save-btn" style="flex: 1;">Save FAQ Set</button>
+              <button class="btn btn-secondary" id="faq-set-cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Quill Rich Text Editor Script -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+  <script>
+    // Config login credentials
+    let sessionToken = localStorage.getItem('bala_admin_token') || '';
+    
+    // State management
+    let currentMode = 'new-page'; // 'new-page', 'edit-blog', 'edit-service', 'edit-general'
+    let activeTab = 'seo'; // 'seo', 'content', 'raw'
+    let allPageList = [];
+    let parsedHtmlDoc = null;
+    let originalFilename = ''; // Keep track of old name in case of slug change
+    let textNodesData = []; // Store references to text nodes in the parsed document
+    let blogFaqsData = []; // Store FAQs data structured
+    let loadedAdsData = []; // Store Google Ads attributes dynamically
+    let faqLibraryData = {}; // Store all FAQs sets globally
+    let editingFaqSetKey = null; // Key of FAQ set currently being edited
+    let currentFaqSetItems = []; // Accordion rows in form
+
+    // Initialize Quill Editor
+    const quill = new Quill('#editor-content', {
+      modules: {
+        toolbar: [
+          [{ 'header': [2, 3, 4, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          ['link', 'blockquote', 'code-block'],
+          ['clean']
+        ]
+      },
+      placeholder: 'Write page body content here...',
+      theme: 'snow'
+    });
+
+    // Helper: Isolate and replace AdSense, TOC, and FAQ code with safe text markers for Quill
+    function prepareContentForEditor(htmlDoc) {
+      const blogBody = htmlDoc.querySelector('.article-content');
+      if (!blogBody) return '';
+
+      // Clone node to prevent direct layout shifts during replacement
+      const clone = blogBody.cloneNode(true);
+
+      // 1. Replace Table of Contents with [TOC]
+      const toc = clone.querySelector('.toc-container');
+      if (toc) {
+        const tocP = htmlDoc.createElement('p');
+        tocP.textContent = '[TOC]';
+        toc.parentNode.replaceChild(tocP, toc);
+      }
+
+      // 2. Replace Google AdSense script blocks with [ADSENSE-INDEX]
+      loadedAdsData = [];
+      const ads = clone.querySelectorAll('ins.adsbygoogle');
+      ads.forEach((ad) => {
+        const parentDiv = ad.closest('div');
+        if (parentDiv) {
+          const adIndex = loadedAdsData.length + 1;
+          loadedAdsData.push({
+            client: ad.getAttribute('data-ad-client') || '',
+            slot: ad.getAttribute('data-ad-slot') || '',
+            format: ad.getAttribute('data-ad-format') || 'auto',
+            responsive: ad.getAttribute('data-full-width-responsive') || 'true'
+          });
+          
+          const adP = htmlDoc.createElement('p');
+          adP.textContent = `[ADSENSE-${adIndex}]`;
+          parentDiv.parentNode.replaceChild(adP, parentDiv);
+        }
+      });
+
+      // 3. Replace FAQ Accordion section with [FAQ]
+      const faqSection = clone.querySelector('.faq-section');
+      if (faqSection) {
+        const faqP = htmlDoc.createElement('p');
+        faqP.textContent = '[FAQ]';
+        faqSection.parentNode.replaceChild(faqP, faqSection);
+      }
+
+      return clone.innerHTML.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function restoreContentFromEditor(quillHtml) {
+      const parser = new DOMParser();
+      const tempDoc = parser.parseFromString(quillHtml, 'text/html');
+
+      // Scan all elements to replace markers
+      const paragraphs = tempDoc.querySelectorAll('p');
+      paragraphs.forEach(p => {
+        const text = p.textContent.trim();
+        
+        // 1. Rebuild Table of Contents if [TOC] is found
+        if (text === '[TOC]') {
+          const tocContainer = tempDoc.createElement('div');
+          tocContainer.className = 'toc-container';
+          
+          const tocTitle = tempDoc.createElement('h4');
+          tocTitle.className = 'toc-title';
+          tocTitle.textContent = 'Table of Contents';
+          tocContainer.appendChild(tocTitle);
+          
+          const tocList = tempDoc.createElement('ul');
+          tocList.className = 'toc-list';
+          
+          const headings = tempDoc.querySelectorAll('h2, h3');
+          headings.forEach(heading => {
+            const headingText = heading.textContent.trim();
+            if (headingText === 'Table of Contents' || headingText === 'Frequently Asked Questions (FAQs)') return;
+            
+            const id = headingText.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+            heading.setAttribute('id', id);
+            
+            const li = tempDoc.createElement('li');
+            const link = tempDoc.createElement('a');
+            link.setAttribute('href', '#' + id);
+            link.textContent = headingText;
+            li.appendChild(link);
+            
+            if (heading.tagName.toLowerCase() === 'h3') {
+              let lastLi = tocList.lastElementChild;
+              if (lastLi) {
+                let sublist = lastLi.querySelector('ul');
+                if (!sublist) {
+                  sublist = tempDoc.createElement('ul');
+                  sublist.className = 'toc-sublist';
+                  sublist.style.cssText = 'list-style: none; padding-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;';
+                  lastLi.appendChild(sublist);
+                }
+                const subLi = tempDoc.createElement('li');
+                subLi.style.cssText = 'position: relative; padding-left: 1rem;';
+                subLi.appendChild(link);
+                sublist.appendChild(subLi);
+              } else {
+                tocList.appendChild(li);
+              }
+            } else {
+              tocList.appendChild(li);
+            }
+          });
+          
+          tocContainer.appendChild(tocList);
+          p.parentNode.replaceChild(tocContainer, p);
+        }
+        
+        // 2. Restore Google AdSense code if [ADSENSE-X] is found
+        else if (text.startsWith('[ADSENSE-')) {
+          const match = text.match(/\[ADSENSE-(\d+)\]/);
+          if (match) {
+            const adIndex = parseInt(match[1]) - 1;
+            const adData = loadedAdsData[adIndex];
+            if (adData) {
+              const wrapperDiv = tempDoc.createElement('div');
+              wrapperDiv.style.cssText = 'margin: 30px 0; text-align: center;';
+              
+              const comment = tempDoc.createComment(` Blog ${adIndex + 1} `);
+              wrapperDiv.appendChild(comment);
+              
+              const insTag = tempDoc.createElement('ins');
+              insTag.className = 'adsbygoogle';
+              insTag.style.cssText = 'display:block';
+              insTag.setAttribute('data-ad-client', adData.client);
+              insTag.setAttribute('data-ad-slot', adData.slot);
+              insTag.setAttribute('data-ad-format', adData.format);
+              insTag.setAttribute('data-full-width-responsive', adData.responsive);
+              wrapperDiv.appendChild(insTag);
+              
+              const scriptTag = tempDoc.createElement('script');
+              scriptTag.textContent = '(adsbygoogle = window.adsbygoogle || []).push({});';
+              wrapperDiv.appendChild(scriptTag);
+              
+              p.parentNode.replaceChild(wrapperDiv, p);
+            }
+          }
+        }
+        
+        // 3. Restore FAQ accordion section if [FAQ] or [FAQ-X] is found
+        else if (text === '[FAQ]' || text.startsWith('[FAQ-')) {
+          let faqKey = '';
+          if (text === '[FAQ]') {
+            const pageSlug = document.getElementById('page-slug').value.trim();
+            faqKey = 'faq-' + pageSlug;
+          } else {
+            const match = text.match(/\[FAQ-([a-zA-Z0-9-]+)\]/);
+            if (match) faqKey = match[1];
+          }
+          
+          const faqSet = faqLibraryData[faqKey];
+          if (faqSet && faqSet.items.length > 0) {
+            const faqSection = tempDoc.createElement('div');
+            faqSection.className = 'faq-section';
+            faqSection.style.cssText = 'margin-top: 2rem; margin-bottom: 2rem;';
+            
+            const faqList = tempDoc.createElement('div');
+            faqList.className = 'faq-list';
+            
+            faqSet.items.forEach((item, index) => {
+              const itemComment = tempDoc.createComment(` FAQ Item ${index + 1} `);
+              faqList.appendChild(itemComment);
+              
+              const faqItem = tempDoc.createElement('div');
+              faqItem.className = 'faq-item';
+              
+              const faqQuestion = tempDoc.createElement('div');
+              faqQuestion.className = 'faq-question';
+              faqQuestion.textContent = item.question + ' ';
+              
+              const svg = tempDoc.createElementNS('http://www.w3.org/2000/svg', 'svg');
+              svg.setAttribute('viewBox', '0 0 24 24');
+              const path = tempDoc.createElementNS('http://www.w3.org/2000/svg', 'path');
+              path.setAttribute('d', 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z');
+              svg.appendChild(path);
+              faqQuestion.appendChild(svg);
+              
+              const faqAnswer = tempDoc.createElement('div');
+              faqAnswer.className = 'faq-answer';
+              
+              let answerContent = item.answer.trim();
+              if (!answerContent.startsWith('<p>')) {
+                answerContent = `<p>${answerContent}</p>`;
+              }
+              faqAnswer.innerHTML = answerContent;
+              
+              faqItem.appendChild(faqQuestion);
+              faqItem.appendChild(faqAnswer);
+              faqList.appendChild(faqItem);
+            });
+            
+            faqSection.appendChild(faqList);
+            p.parentNode.replaceChild(faqSection, p);
+          } else {
+            p.remove(); // Remove FAQ placeholder if empty
+          }
+        }
+      });
+
+      return tempDoc.body.innerHTML.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    // Helper: Render FAQ editor fields
+    function renderFaqEditorList() {
+      const container = document.getElementById('faq-editor-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (blogFaqsData.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem; border: 1px dashed var(--border); border-radius: 8px;">No FAQs added yet. Click "+ Add FAQ Item" above to add some.</div>';
+        return;
+      }
+
+      blogFaqsData.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'faq-editor-item';
+        itemDiv.style.cssText = 'background: rgba(31, 46, 71, 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem;';
+
+        const header = document.createElement('div');
+        header.className = 'faq-editor-header';
+        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; font-weight: 600; color: var(--primary);';
+        header.innerHTML = `<span>FAQ Accordion #${index + 1}</span>`;
+
+        const deleteLink = document.createElement('span');
+        deleteLink.className = 'faq-editor-delete-btn';
+        deleteLink.style.cssText = 'color: var(--danger); cursor: pointer; font-size: 0.85rem; font-weight: 600;';
+        deleteLink.textContent = 'Remove';
+        deleteLink.addEventListener('click', () => {
+          syncFaqsToInputs();
+          blogFaqsData.splice(index, 1);
+          renderFaqEditorList();
+        });
+        header.appendChild(deleteLink);
+
+        const qGroup = document.createElement('div');
+        qGroup.className = 'form-group';
+        qGroup.style.marginBottom = '0.75rem';
+        const qLabel = document.createElement('label');
+        qLabel.textContent = 'Question Text';
+        const qInput = document.createElement('input');
+        qInput.type = 'text';
+        qInput.className = 'faq-q-input';
+        qInput.value = item.question;
+        qInput.placeholder = 'e.g. What is SEO?';
+        qInput.style.cssText = 'width: 100%; padding: 0.5rem; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px;';
+        qGroup.appendChild(qLabel);
+        qGroup.appendChild(qInput);
+
+        const aGroup = document.createElement('div');
+        aGroup.className = 'form-group';
+        aGroup.style.marginBottom = '0';
+        const aLabel = document.createElement('label');
+        aLabel.textContent = 'Answer Text (Paragraph content)';
+        const aInput = document.createElement('textarea');
+        aInput.rows = 3;
+        aInput.className = 'faq-a-input';
+        aInput.value = item.answer;
+        aInput.placeholder = 'e.g. SEO stands for Search Engine Optimization...';
+        aInput.style.cssText = 'width: 100%; padding: 0.5rem; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px; font-family: inherit;';
+        aGroup.appendChild(aLabel);
+        aGroup.appendChild(aInput);
+
+        itemDiv.appendChild(header);
+        itemDiv.appendChild(qGroup);
+        itemDiv.appendChild(aGroup);
+        container.appendChild(itemDiv);
+      });
+    }
+
+    // Read values from form inputs and update blogFaqsData list
+    function syncFaqsToInputs() {
+      const items = document.querySelectorAll('.faq-editor-item');
+      const updated = [];
+      items.forEach(item => {
+        const qVal = item.querySelector('.faq-q-input').value.trim();
+        const aVal = item.querySelector('.faq-a-input').value.trim();
+        updated.push({ question: qVal, answer: aVal });
+      });
+      blogFaqsData = updated;
+    }
+
+    // Sync latest FAQs list to visual placeholder inside Quill
+    function syncFaqsToQuill() {
+      syncFaqsToInputs();
+      
+      let found = false;
+      const paragraphs = quill.root.querySelectorAll('p');
+      paragraphs.forEach(p => {
+        if (p.textContent.trim() === '[FAQ]') {
+          found = true;
+        }
+      });
+
+      if (!found && blogFaqsData.length > 0) {
+        // If placeholder was deleted accidentally by editor, append a new one
+        quill.root.innerHTML = quill.root.innerHTML + `<p>[FAQ]</p>`;
+      }
+    }
+
+    // Add FAQ item listener
+    document.getElementById('add-faq-item-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      syncFaqsToInputs();
+      blogFaqsData.push({ question: '', answer: '' });
+      renderFaqEditorList();
+    });
+
+    // Auto-generate slug from Title
+    const titleInput = document.getElementById('meta-title');
+    const slugInput = document.getElementById('page-slug');
+
+    titleInput.addEventListener('input', () => {
+      if (currentMode === 'new-page') {
+        slugInput.value = titleInput.value
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+      }
+    });
+
+    // Unified API calling helper to support BOTH Local Server and Live Hostinger Server
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+      let url = '';
+      const headers = { 'Content-Type': 'application/json' };
+      if (sessionToken) {
+        headers['Authorization'] = sessionToken;
+      }
+      
+      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const isFileProtocol = window.location.protocol === 'file:';
+      
+      if (isFileProtocol) {
+        alert("Warning: You opened this HTML file directly via double-clicking. Browsers restrict background script execution on file:// URLs.\n\nTo use CMS locally:\n1. Start admin_server.ps1 in PowerShell.\n2. Open http://localhost:3000/bala-admin.html in browser.");
+        throw new Error("Direct file opening is not supported by browsers. Start the server.");
+      }
+      
+      if (isLocalHost) {
+        url = `/api/${endpoint}`;
+      } else {
+        url = `bala-admin-backend.php?action=${endpoint}`;
+      }
+      
+      const options = { method, headers };
+      if (body) {
+        options.body = JSON.stringify(body);
+      }
+      
+      const res = await fetch(url, options);
+      const text = await res.text();
+      
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Server returned invalid response (Not JSON). Status: " + res.status + ". Response: " + text.substring(0, 120) + "...");
+      }
+      
+      if (!res.ok) throw new Error(result.message || 'API Request failed');
+      return result;
+    }
+
+    // Image Upload Handling
+    const dropzone = document.getElementById('dropzone');
+    const imageInput = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const uploadPrompt = document.getElementById('upload-prompt');
+    let base64Image = '';
+
+    dropzone.addEventListener('click', () => imageInput.click());
+    imageInput.addEventListener('change', handleImageSelect);
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--primary)';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.style.borderColor = 'var(--border)';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--border)';
+      if (e.dataTransfer.files.length > 0) {
+        imageInput.files = e.dataTransfer.files;
+        handleImageSelect();
+      }
+    });
+
+    function handleImageSelect() {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Image = e.target.result;
+          imagePreview.src = base64Image;
+          imagePreview.style.display = 'block';
+          uploadPrompt.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Sidebar navigation click handlers
+    const navItems = {
+      'menu-new-page': 'new-page',
+      'menu-edit-blogs': 'edit-blog',
+      'menu-edit-services': 'edit-service',
+      'menu-edit-general': 'edit-general',
+      'menu-faq-library': 'faq-library'
+    };
+
+    Object.keys(navItems).forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        // Toggle active menu class
+        Object.keys(navItems).forEach(key => document.getElementById(key).classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        
+        if (navItems[id] === 'faq-library') {
+          document.getElementById('editor-workspace-view').style.display = 'none';
+          document.getElementById('faq-library-workspace-view').style.display = 'block';
+          document.getElementById('cms-status').style.display = 'none';
+          currentMode = 'faq-library';
+          loadFaqLibrary();
+        } else {
+          document.getElementById('editor-workspace-view').style.display = 'block';
+          document.getElementById('faq-library-workspace-view').style.display = 'none';
+          switchMode(navItems[id]);
+        }
+      });
+    });
+
+    // Tab switching handlers
+    const tabBtns = {
+      'tab-seo-settings': 'seo',
+      'tab-page-content': 'content',
+      'tab-blog-faqs': 'faqs',
+      'tab-raw-html': 'raw'
+    };
+
+    Object.keys(tabBtns).forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        Object.keys(tabBtns).forEach(key => document.getElementById(key).classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        switchTab(tabBtns[id]);
+      });
+    });
+
+    function switchTab(tab) {
+      // Sync changes when leaving faqs tab
+      if (activeTab === 'faqs') {
+        syncFaqsToQuill();
+      }
+
+      activeTab = tab;
+      document.getElementById('tab-panel-seo').style.display = (tab === 'seo') ? 'block' : 'none';
+      document.getElementById('tab-panel-content').style.display = (tab === 'content') ? 'block' : 'none';
+      document.getElementById('tab-panel-raw-html').style.display = (tab === 'raw') ? 'block' : 'none';
+      document.getElementById('tab-panel-faqs').style.display = (tab === 'faqs') ? 'block' : 'none';
+      
+      // Update Raw HTML Editor text if entering raw mode
+      if (tab === 'raw' && parsedHtmlDoc) {
+        document.getElementById('raw-html-editor').value = parsedHtmlDoc.documentElement.outerHTML;
+      }
+    }
+
+    async function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('cms-status').style.display = 'none';
+      document.getElementById('faq-library-workspace-view').style.display = 'none';
+      document.getElementById('editor-workspace-view').style.display = 'block';
+      
+      // Reset forms
+      document.getElementById('meta-title').value = '';
+      document.getElementById('page-slug').value = '';
+      document.getElementById('meta-description').value = '';
+      document.getElementById('canonical-url').value = '';
+      document.getElementById('check-noindex').checked = false;
+      document.getElementById('check-nofollow').checked = false;
+      quill.root.innerHTML = '';
+      imagePreview.style.display = 'none';
+      uploadPrompt.style.display = 'block';
+      base64Image = '';
+      parsedHtmlDoc = null;
+      originalFilename = '';
+      blogFaqsData = [];
+      document.getElementById('tab-blog-faqs').style.display = 'none';
+      
+      // Always show tab bar, but hide the Raw HTML tab when creating a new page
+      document.getElementById('editor-tabs-bar').style.display = 'flex';
+      document.getElementById('tab-raw-html').style.display = (mode === 'new-page') ? 'none' : 'block';
+      
+      // Reset active tab button styling to SEO Metadata tab
+      Object.keys(tabBtns).forEach(key => document.getElementById(key).classList.remove('active'));
+      document.getElementById('tab-seo-settings').classList.add('active');
+      switchTab('seo'); // Reset to SEO tab
+
+      if (mode === 'new-page') {
+        document.getElementById('workspace-title').textContent = 'Create a New Page';
+        document.getElementById('page-selector-container').style.display = 'none';
+        document.getElementById('group-page-type').style.display = 'block';
+        document.getElementById('blog-meta-details').style.display = 'block';
+        document.getElementById('image-upload-wrapper').style.display = 'block';
+        document.getElementById('quill-editor-wrapper').style.display = 'block';
+        document.getElementById('block-editor-wrapper').style.display = 'none';
+        document.getElementById('delete-page-btn').style.display = 'none';
+        document.getElementById('save-btn').textContent = 'Publish New Page';
+        
+        // Toggle FAQ tab based on active new page type (defaults to blog)
+        document.getElementById('tab-blog-faqs').style.display = (newPageTypeSelect.value === 'blog') ? 'block' : 'none';
+        renderFaqEditorList();
+      } else {
+        document.getElementById('workspace-title').textContent = 'Modify Page Content';
+        document.getElementById('page-selector-container').style.display = 'block';
+        document.getElementById('group-page-type').style.display = 'none';
+        document.getElementById('save-btn').textContent = 'Save Page Changes';
+        document.getElementById('delete-page-btn').style.display = 'inline-flex';
+        
+        await loadAllPagesDropdown();
+      }
+    }
+
+    // Load dropdown with correct classified files
+    async function loadAllPagesDropdown() {
+      const dropdown = document.getElementById('select-active-page');
+      dropdown.innerHTML = '<option value="">-- Select Page to Edit --</option>';
+      
+      const statusDiv = document.getElementById('cms-status');
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Loading pages...';
+      statusDiv.style.display = 'block';
+      
+      try {
+        allPageList = await apiRequest('list-pages');
+        statusDiv.style.display = 'none';
+        
+        // Filter list based on current Mode
+        let filtered = [];
+        if (currentMode === 'edit-blog') {
+          // Blog posts: exclude general service pages and home pages
+          filtered = allPageList.filter(file => {
+            const cores = ['index.html', 'about.html', 'services.html', 'contact.html', 'sitemap.html', 'blog.html', 'seo-services.html', 'google-ads-services.html', 'meta-ads-services.html', 'web-design-services.html'];
+            return !cores.includes(file);
+          });
+        } else if (currentMode === 'edit-service') {
+          filtered = allPageList.filter(file => {
+            return ['seo-services.html', 'google-ads-services.html', 'meta-ads-services.html', 'web-design-services.html'].includes(file);
+          });
+        } else if (currentMode === 'edit-general') {
+          filtered = allPageList.filter(file => {
+            return ['index.html', 'about.html', 'services.html', 'contact.html', 'sitemap.html', 'blog.html'].includes(file);
+          });
+        }
+        
+        filtered.forEach(file => {
+          const opt = document.createElement('option');
+          opt.value = file;
+          opt.textContent = file;
+          dropdown.appendChild(opt);
+        });
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error: ' + err.message;
+      }
+    }
+
+    // Toggle New Page creation view based on category select
+    const newPageTypeSelect = document.getElementById('new-page-type');
+    newPageTypeSelect.addEventListener('change', () => {
+      const type = newPageTypeSelect.value;
+      if (type === 'blog') {
+        document.getElementById('blog-meta-details').style.display = 'block';
+        document.getElementById('image-upload-wrapper').style.display = 'block';
+        document.getElementById('quill-editor-wrapper').style.display = 'block';
+        document.getElementById('tab-blog-faqs').style.display = 'block';
+      } else {
+        // Services and General pages in create mode will start with raw visual builder or direct code template
+        document.getElementById('blog-meta-details').style.display = 'none';
+        document.getElementById('image-upload-wrapper').style.display = 'block';
+        document.getElementById('quill-editor-wrapper').style.display = 'block'; // Quill will save to basic structure
+        document.getElementById('tab-blog-faqs').style.display = 'none';
+      }
+    });
+
+    // Selection handler to load a page for editing
+    const selectActivePage = document.getElementById('select-active-page');
+    selectActivePage.addEventListener('change', async () => {
+      const filename = selectActivePage.value;
+      if (!filename) return;
+
+      originalFilename = filename;
+      const statusDiv = document.getElementById('cms-status');
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Fetching page contents...';
+      statusDiv.style.display = 'block';
+
+      try {
+        const result = await apiRequest(`get-page&file=${filename}`);
+        statusDiv.style.display = 'none';
+        
+        // Parse raw HTML using browser's DOMParser
+        const parser = new DOMParser();
+        parsedHtmlDoc = parser.parseFromString(result.html, 'text/html');
+        
+        // 1. Populate SEO Meta fields
+        document.getElementById('meta-title').value = parsedHtmlDoc.title || '';
+        document.getElementById('page-slug').value = filename.replace('.html', '');
+        
+        const descNode = parsedHtmlDoc.querySelector('meta[name="description"]');
+        document.getElementById('meta-description').value = descNode ? descNode.getAttribute('content') : '';
+        
+        const canonicalNode = parsedHtmlDoc.querySelector('link[rel="canonical"]');
+        document.getElementById('canonical-url').value = canonicalNode ? canonicalNode.getAttribute('href') : '';
+        
+        const robotsNode = parsedHtmlDoc.querySelector('meta[name="robots"]');
+        const robotsValue = robotsNode ? robotsNode.getAttribute('content') : '';
+        document.getElementById('check-noindex').checked = robotsValue.includes('noindex');
+        document.getElementById('check-nofollow').checked = robotsValue.includes('nofollow');
+        
+        // 2. Load Content Editor Tabs
+        if (currentMode === 'edit-blog') {
+          document.getElementById('blog-meta-details').style.display = 'block';
+          document.getElementById('image-upload-wrapper').style.display = 'block';
+          document.getElementById('quill-editor-wrapper').style.display = 'block';
+          document.getElementById('block-editor-wrapper').style.display = 'none';
+          
+          // Preload content into Quill with visual placeholders for TOC and Ads
+          if (parsedHtmlDoc) {
+            quill.root.innerHTML = prepareContentForEditor(parsedHtmlDoc);
+          } else {
+            quill.root.innerHTML = '';
+          }
+          
+          // Preload blog featured image preview if exists
+          const imgNode = parsedHtmlDoc.querySelector('.article-cover-box img, .blog-img-box img');
+          if (imgNode) {
+            imagePreview.src = imgNode.getAttribute('src');
+            imagePreview.style.display = 'block';
+            uploadPrompt.style.display = 'none';
+          }
+
+          // Extract FAQs, auto-migrate to global library, and set up tab binding
+          const pageSlug = filename.replace('.html', '');
+          const faqKey = 'faq-' + pageSlug;
+          let hasPageFaqs = false;
+          
+          const faqSection = parsedHtmlDoc.querySelector('.faq-section');
+          if (faqSection) {
+            const extractedItems = [];
+            const itemNodes = faqSection.querySelectorAll('.faq-item');
+            itemNodes.forEach(item => {
+              const qNode = item.querySelector('.faq-question');
+              const aNode = item.querySelector('.faq-answer');
+              if (qNode && aNode) {
+                const qClone = qNode.cloneNode(true);
+                qClone.querySelectorAll('svg').forEach(svg => svg.remove());
+                extractedItems.push({
+                  question: qClone.textContent.trim(),
+                  answer: aNode.innerHTML.trim()
+                });
+              }
+            });
+            
+            if (extractedItems.length > 0) {
+              hasPageFaqs = true;
+              if (!faqLibraryData[faqKey]) {
+                // Auto-migrate to global FAQ Library
+                faqLibraryData[faqKey] = {
+                  title: (parsedHtmlDoc.title ? parsedHtmlDoc.title + ' FAQs' : pageSlug + ' FAQs'),
+                  items: extractedItems
+                };
+                // Background sync
+                apiRequest('save-faqs', 'POST', faqLibraryData).catch(e => console.error(e));
+              }
+            }
+          }
+          
+          // Make sure we have a library reference for this page in global
+          if (!faqLibraryData[faqKey]) {
+            faqLibraryData[faqKey] = {
+              title: (parsedHtmlDoc.title ? parsedHtmlDoc.title + ' FAQs' : pageSlug + ' FAQs'),
+              items: []
+            };
+          }
+          
+          blogFaqsData = faqLibraryData[faqKey].items;
+          document.getElementById('tab-blog-faqs').style.display = 'block';
+          renderFaqEditorList();
+        } else {
+          // Services and General pages load structured block-by-block text & images editor
+          document.getElementById('blog-meta-details').style.display = 'none';
+          document.getElementById('image-upload-wrapper').style.display = 'none'; // handled inline per image
+          document.getElementById('quill-editor-wrapper').style.display = 'none';
+          document.getElementById('block-editor-wrapper').style.display = 'block';
+          
+          buildStructuredBlockEditor();
+        }
+        
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error loading page: ' + err.message;
+      }
+    });
+
+    // Traversing helper to extract visible, non-layout text node parents
+    function buildStructuredBlockEditor() {
+      const listContainer = document.getElementById('block-editor-list');
+      listContainer.innerHTML = '';
+      textNodesData = [];
+
+      const mainEl = parsedHtmlDoc.querySelector('main') || parsedHtmlDoc.body;
+      
+      // 1. Parse Image tags inside main
+      const images = mainEl.querySelectorAll('img');
+      images.forEach((img, i) => {
+        const item = document.createElement('div');
+        item.className = 'block-editor-item';
+        
+        const label = document.createElement('div');
+        label.className = 'block-editor-label';
+        label.innerHTML = `<span>Page Image #${i+1} (${img.getAttribute('src') || 'No Src'})</span>`;
+        
+        const preview = document.createElement('img');
+        preview.src = img.getAttribute('src');
+        preview.style.display = 'block';
+        preview.style.maxWidth = '200px';
+        preview.style.maxHeight = '120px';
+        preview.style.marginBottom = '0.75rem';
+        preview.style.borderRadius = '4px';
+        
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              preview.src = e.target.result;
+              img.setAttribute('src', `blog_${originalFilename.replace('.html','')}_img_${i}.${file.name.split('.').pop()}`);
+              img.dataset.pendingBase64 = e.target.result; // store data to write on backend
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        item.appendChild(label);
+        item.appendChild(preview);
+        item.appendChild(fileInput);
+        listContainer.appendChild(item);
+      });
+
+      // 2. Parse Text Nodes
+      const walk = parsedHtmlDoc.createTreeWalker(mainEl, NodeFilter.SHOW_TEXT, null, false);
+      let node;
+      let counter = 0;
+      
+      while (node = walk.nextNode()) {
+        const parent = node.parentNode;
+        const parentTag = parent.tagName.toLowerCase();
+        
+        if (['script', 'style', 'code', 'pre', 'noscript', 'svg', 'path'].includes(parentTag)) continue;
+        if (parent.closest('nav') || parent.closest('footer') || parent.closest('.top-bar')) continue;
+        
+        const text = node.nodeValue.trim();
+        if (text.length > 1) {
+          counter++;
+          textNodesData.push({
+            node: node,
+            originalText: text
+          });
+
+          const item = document.createElement('div');
+          item.className = 'block-editor-item';
+
+          const label = document.createElement('div');
+          label.className = 'block-editor-label';
+          label.innerHTML = `<span>Section Text #${counter} (${parentTag.toUpperCase()})</span>`;
+
+          const textarea = document.createElement('textarea');
+          textarea.rows = text.length > 80 ? 3 : 1;
+          textarea.value = text;
+          textarea.dataset.nodeIndex = textNodesData.length - 1;
+          textarea.addEventListener('input', () => {
+            node.nodeValue = textarea.value; // Write updates directly back to parsed DOM node
+          });
+
+          item.appendChild(label);
+          item.appendChild(textarea);
+          listContainer.appendChild(item);
+        }
+      }
+    }
+
+    // Delete Page Action
+    document.getElementById('delete-page-btn').addEventListener('click', async () => {
+      if (!confirm(`Are you sure you want to delete ${originalFilename}? This will delete the HTML page and remove it from sitemaps and listings.`)) return;
+
+      const statusDiv = document.getElementById('cms-status');
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Deleting page...';
+      statusDiv.style.display = 'block';
+
+      try {
+        await apiRequest('delete', 'POST', { href: originalFilename });
+        statusDiv.className = 'status-box status-success';
+        statusDiv.textContent = 'Page deleted successfully!';
+        switchMode(currentMode);
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error deleting: ' + err.message;
+      }
+    });
+
+    // Save Page changes or Publish New Page
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.addEventListener('click', async () => {
+      const statusDiv = document.getElementById('cms-status');
+      // Sync FAQs if saving from FAQs tab
+      if (activeTab === 'faqs') {
+        syncFaqsToQuill();
+      }
+
+      const title = document.getElementById('meta-title').value.trim();
+      const slug = document.getElementById('page-slug').value.trim();
+      const description = document.getElementById('meta-description').value.trim();
+      const canonical = document.getElementById('canonical-url').value.trim();
+      const noindex = document.getElementById('check-noindex').checked;
+      const nofollow = document.getElementById('check-nofollow').checked;
+      
+      if (!title || !slug || !description) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Please provide Page Title, Slug, and Meta Description.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Saving and building pages (approx 10s)...';
+      statusDiv.style.display = 'block';
+      saveBtn.disabled = true;
+
+      try {
+        // Synchronize local FAQ inputs to the global FAQ library first
+        const isBlog = (currentMode === 'edit-blog') || (currentMode === 'new-page' && newPageTypeSelect.value === 'blog');
+        if (isBlog) {
+          syncFaqsToInputs();
+          const faqKey = 'faq-' + slug;
+          faqLibraryData[faqKey] = {
+            title: title + ' FAQs',
+            items: blogFaqsData
+          };
+          await apiRequest('save-faqs', 'POST', faqLibraryData);
+        }
+
+        // --- 1. HANDLE CREATE NEW PAGE MODE ---
+        if (currentMode === 'new-page') {
+          const type = newPageTypeSelect.value;
+          let bodyContent = quill.root.innerHTML;
+          const category = document.getElementById('blog-category').value;
+          const readtime = document.getElementById('blog-readtime').value;
+
+          if (type === 'blog' && !base64Image) {
+            throw new Error("Please upload a featured banner image for the blog post.");
+          }
+
+          // In new blog mode, dynamically compile FAQs and Table of Contents placeholders
+          if (type === 'blog') {
+            if (blogFaqsData.length > 0 && bodyContent.indexOf('[FAQ]') === -1) {
+              bodyContent += `<p>[FAQ]</p>`;
+            }
+            if (bodyContent.indexOf('[TOC]') === -1) {
+              bodyContent = `<p>[TOC]</p>` + bodyContent;
+            }
+          }
+
+          // Compile raw code placeholders back to full code elements
+          const finalBodyContent = restoreContentFromEditor(bodyContent);
+
+          await apiRequest('publish-blog', 'POST', {
+            title: title,
+            slug: slug,
+            description: description,
+            category: category,
+            readtime: readtime,
+            image: base64Image || 'placeholder.jpg',
+            content: finalBodyContent
+          });
+        } 
+        
+        // --- 2. HANDLE EDIT MODE (BLOGS, SERVICES, GENERAL) ---
+        else {
+          // If we edited raw HTML tab, load from textarea
+          if (activeTab === 'raw') {
+            const rawHtml = document.getElementById('raw-html-editor').value;
+            const parser = new DOMParser();
+            parsedHtmlDoc = parser.parseFromString(rawHtml, 'text/html');
+          }
+
+          // Update head tags in DOM
+          parsedHtmlDoc.title = title;
+          
+          let descNode = parsedHtmlDoc.querySelector('meta[name="description"]');
+          if (!descNode) {
+            descNode = parsedHtmlDoc.createElement('meta');
+            descNode.setAttribute('name', 'description');
+            parsedHtmlDoc.head.appendChild(descNode);
+          }
+          descNode.setAttribute('content', description);
+
+          let canonicalNode = parsedHtmlDoc.querySelector('link[rel="canonical"]');
+          if (canonical) {
+            if (!canonicalNode) {
+              canonicalNode = parsedHtmlDoc.createElement('link');
+              canonicalNode.setAttribute('rel', 'canonical');
+              parsedHtmlDoc.head.appendChild(canonicalNode);
+            }
+            canonicalNode.setAttribute('href', canonical);
+          } else if (canonicalNode) {
+            canonicalNode.remove();
+          }
+
+          // Robots noindex/nofollow
+          let robotsNode = parsedHtmlDoc.querySelector('meta[name="robots"]');
+          if (noindex || nofollow) {
+            if (!robotsNode) {
+              robotsNode = parsedHtmlDoc.createElement('meta');
+              robotsNode.setAttribute('name', 'robots');
+              parsedHtmlDoc.head.appendChild(robotsNode);
+            }
+            let robotsVal = [];
+            if (noindex) robotsVal.push('noindex');
+            if (nofollow) robotsVal.push('nofollow');
+            robotsNode.setAttribute('content', robotsVal.join(', '));
+          } else if (robotsNode) {
+            robotsNode.remove();
+          }
+
+          // Update blog content inside parsed DOM if in edit-blog and quill was active
+          if (currentMode === 'edit-blog' && activeTab !== 'raw') {
+            const blogBody = parsedHtmlDoc.querySelector('.article-content');
+            if (blogBody) {
+              blogBody.innerHTML = restoreContentFromEditor(quill.root.innerHTML);
+            }
+            if (base64Image) {
+              // Update cover image src
+              const coverImg = parsedHtmlDoc.querySelector('.article-cover-box img, .blog-img-box img');
+              if (coverImg) {
+                coverImg.setAttribute('src', `blog_${slug}.jpg`);
+              }
+            }
+          }
+
+          // Send any block image uploads to the server first
+          const imagesWithPendingUpload = parsedHtmlDoc.querySelectorAll('img[data-pending-base64]');
+          for (let img of imagesWithPendingUpload) {
+            const base64 = img.dataset.pendingBase64;
+            const srcFilename = img.getAttribute('src');
+            // Write image to server
+            await apiRequest('publish-blog', 'POST', {
+              title: "Temp",
+              slug: slug + "_img_tmp",
+              description: "Temp",
+              category: "seo",
+              image: base64,
+              content: "Temp"
+            });
+            img.removeAttribute('data-pending-base64');
+          }
+
+          // Clean up formatting whitespace in final HTML
+          const finalHtml = parsedHtmlDoc.documentElement.outerHTML.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+          // Save page content
+          await apiRequest('save-page', 'POST', {
+            file: originalFilename,
+            html: finalHtml
+          });
+
+          // Handle file renaming if slug was modified
+          if (slug + '.html' !== originalFilename) {
+            await apiRequest('rename-page', 'POST', {
+              oldFile: originalFilename,
+              newFile: slug + '.html'
+            });
+            originalFilename = slug + '.html';
+          }
+        }
+
+        statusDiv.className = 'status-box status-success';
+        statusDiv.textContent = 'Page successfully compiled and saved live!';
+        statusDiv.style.display = 'block';
+
+        alert('Success: Page saved and published live!');
+
+        setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
+        
+        if (currentMode !== 'new-page') {
+          await loadAllPagesDropdown();
+          document.getElementById('select-active-page').value = originalFilename;
+        } else {
+          switchMode(currentMode);
+        }
+
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error saving changes: ' + err.message;
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
+
+    // LOGIN & INITIAL FLOW
+    const loginOverlay = document.getElementById('login-overlay');
+    const cmsWorkspace = document.getElementById('cms-workspace');
+    const loginSubmitBtn = document.getElementById('login-submit-btn');
+    const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+    const loginStatus = document.getElementById('login-status');
+
+    if (sessionToken) {
+      checkSession();
+    }
+
+    async function checkSession() {
+      try {
+        await apiRequest('check');
+        loginOverlay.style.display = 'none';
+        cmsWorkspace.style.display = 'block';
+        
+        try {
+          faqLibraryData = await apiRequest('get-faqs');
+        } catch (e) {
+          console.error("Failed to load FAQs library on startup:", e);
+        }
+        
+        switchMode('new-page');
+      } catch (err) {
+        localStorage.removeItem('bala_admin_token');
+        sessionToken = '';
+      }
+    }
+
+    loginSubmitBtn.addEventListener('click', async () => {
+      const email = loginEmailInput.value.trim();
+      const password = loginPasswordInput.value.trim();
+
+      if (!email || !password) {
+        loginStatus.className = 'status-box status-error';
+        loginStatus.textContent = 'Please enter both email and password.';
+        loginStatus.style.display = 'block';
+        return;
+      }
+
+      loginStatus.className = 'status-box status-loading';
+      loginStatus.innerHTML = '<div class="spinner"></div> Authenticating...';
+      loginStatus.style.display = 'block';
+
+      try {
+        const result = await apiRequest('login', 'POST', { email: email, password: password });
+        sessionToken = result.token;
+        localStorage.setItem('bala_admin_token', sessionToken);
+        
+        try {
+          faqLibraryData = await apiRequest('get-faqs');
+        } catch (e) {
+          console.error("Failed to load FAQs library on startup:", e);
+        }
+        
+        loginStatus.style.display = 'none';
+        loginOverlay.style.display = 'none';
+        cmsWorkspace.style.display = 'block';
+        switchMode('new-page');
+      } catch (err) {
+        loginStatus.className = 'status-box status-error';
+        loginStatus.textContent = err.message;
+      }
+    });
+
+    // --- FAQ LIBRARY MANAGER LOGIC ---
+    async function loadFaqLibrary() {
+      const statusDiv = document.getElementById('cms-status');
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Loading FAQ Library...';
+      statusDiv.style.display = 'block';
+      
+      try {
+        faqLibraryData = await apiRequest('get-faqs');
+        statusDiv.style.display = 'none';
+        renderFaqLibraryWorkspace();
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error loading FAQ Library: ' + err.message;
+      }
+    }
+
+    function renderFaqLibraryWorkspace() {
+      document.getElementById('faq-library-sets-list').style.display = 'block';
+      document.getElementById('faq-set-edit-form').style.display = 'none';
+      
+      const listDiv = document.getElementById('faq-library-sets-list');
+      listDiv.innerHTML = '';
+      
+      const keys = Object.keys(faqLibraryData);
+      if (keys.length === 0) {
+        listDiv.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 3rem; border: 1px dashed var(--border); border-radius: 8px; font-size: 1.05rem;">No FAQ sets created yet. Click "+ Create FAQ Set" above to start.</div>';
+        return;
+      }
+      
+      keys.forEach(key => {
+        const set = faqLibraryData[key];
+        const setDiv = document.createElement('div');
+        setDiv.className = 'faq-library-item-row';
+        setDiv.style.cssText = 'background: rgba(31, 46, 71, 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;';
+        
+        const infoDiv = document.createElement('div');
+        infoDiv.innerHTML = `
+          <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--primary);">${set.title}</h4>
+          <div style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 1rem;">
+            <span>Count: <strong>${set.items.length} items</strong></span>
+            <span>Shortcode: <code style="background: #0A0F1D; padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--secondary); font-family: monospace;">[FAQ-${key}]</code></span>
+          </div>
+        `;
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.style.cssText = 'display: flex; gap: 0.75rem;';
+        
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'btn btn-secondary';
+        copyBtn.style.padding = '0.4rem 0.8rem';
+        copyBtn.style.fontSize = '0.85rem';
+        copyBtn.textContent = 'Copy Shortcode';
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(`[FAQ-${key}]`);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy Shortcode'; }, 1500);
+        });
+        
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-primary';
+        editBtn.style.padding = '0.4rem 0.8rem';
+        editBtn.style.fontSize = '0.85rem';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => {
+          openFaqSetForm(key);
+        });
+        
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn btn-danger';
+        delBtn.style.padding = '0.4rem 0.8rem';
+        delBtn.style.fontSize = '0.85rem';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', async () => {
+          if (!confirm(`Are you sure you want to delete the FAQ set "${set.title}"?`)) return;
+          delete faqLibraryData[key];
+          await saveFaqLibrary();
+        });
+        
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(delBtn);
+        
+        setDiv.appendChild(infoDiv);
+        setDiv.appendChild(actionsDiv);
+        listDiv.appendChild(setDiv);
+      });
+    }
+
+    function openFaqSetForm(key = null) {
+      document.getElementById('faq-library-sets-list').style.display = 'none';
+      document.getElementById('faq-set-edit-form').style.display = 'block';
+      
+      const formTitle = document.getElementById('faq-form-title');
+      const titleInput = document.getElementById('faq-set-title-input');
+      const idInput = document.getElementById('faq-set-id-input');
+      
+      if (key) {
+        editingFaqSetKey = key;
+        formTitle.textContent = 'Modify FAQ Set';
+        titleInput.value = faqLibraryData[key].title;
+        idInput.value = key;
+        idInput.disabled = true;
+        currentFaqSetItems = JSON.parse(JSON.stringify(faqLibraryData[key].items));
+      } else {
+        editingFaqSetKey = null;
+        formTitle.textContent = 'Create FAQ Set';
+        titleInput.value = '';
+        idInput.value = '';
+        idInput.disabled = false;
+        currentFaqSetItems = [];
+      }
+      
+      renderFaqFormRows();
+    }
+
+    function renderFaqFormRows() {
+      const container = document.getElementById('faq-set-rows-container');
+      container.innerHTML = '';
+      
+      if (currentFaqSetItems.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); padding: 1rem 0; font-size: 0.95rem;">No accordion items added to this set yet. Click "+ Add Item" below.</div>';
+        return;
+      }
+      
+      currentFaqSetItems.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'background: rgba(10, 15, 29, 0.5); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 0.75rem; position: relative;';
+        
+        const header = document.createElement('div');
+        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--primary);';
+        header.innerHTML = `<span>Item #${index + 1}</span>`;
+        
+        const removeLink = document.createElement('span');
+        removeLink.style.cssText = 'color: var(--danger); cursor: pointer;';
+        removeLink.textContent = 'Remove';
+        removeLink.addEventListener('click', () => {
+          syncFaqFormRowsToState();
+          currentFaqSetItems.splice(index, 1);
+          renderFaqFormRows();
+        });
+        header.appendChild(removeLink);
+        
+        const qGroup = document.createElement('div');
+        qGroup.style.marginBottom = '0.5rem';
+        const qLabel = document.createElement('label');
+        qLabel.style.fontSize = '0.8rem';
+        qLabel.textContent = 'Question';
+        const qInput = document.createElement('input');
+        qInput.type = 'text';
+        qInput.className = 'faq-set-row-q';
+        qInput.value = item.question;
+        qInput.style.cssText = 'width: 100%; padding: 0.4rem; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px; font-size: 0.9rem;';
+        qGroup.appendChild(qLabel);
+        qGroup.appendChild(qInput);
+        
+        const aGroup = document.createElement('div');
+        const aLabel = document.createElement('label');
+        aLabel.style.fontSize = '0.8rem';
+        aLabel.textContent = 'Answer';
+        const aInput = document.createElement('textarea');
+        aInput.rows = 2;
+        aInput.className = 'faq-set-row-a';
+        aInput.value = item.answer;
+        aInput.style.cssText = 'width: 100%; padding: 0.4rem; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px; font-size: 0.9rem; font-family: inherit;';
+        aGroup.appendChild(aLabel);
+        aGroup.appendChild(aInput);
+        
+        row.appendChild(header);
+        row.appendChild(qGroup);
+        row.appendChild(aGroup);
+        container.appendChild(row);
+      });
+    }
+
+    function syncFaqFormRowsToState() {
+      const rows = document.querySelectorAll('#faq-set-rows-container > div');
+      const updated = [];
+      rows.forEach(row => {
+        const qEl = row.querySelector('.faq-set-row-q');
+        const aEl = row.querySelector('.faq-set-row-a');
+        if (qEl && aEl) {
+          updated.push({ question: qEl.value.trim(), answer: aEl.value.trim() });
+        }
+      });
+      currentFaqSetItems = updated;
+    }
+
+    async function saveFaqLibrary() {
+      const title = document.getElementById('faq-set-title-input').value.trim();
+      let key = document.getElementById('faq-set-id-input').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+      
+      if (!title || (!editingFaqSetKey && !key)) {
+        alert("Please enter a valid title and unique ID.");
+        return;
+      }
+      
+      if (editingFaqSetKey) {
+        key = editingFaqSetKey;
+      }
+      
+      syncFaqFormRowsToState();
+      
+      faqLibraryData[key] = {
+        title: title,
+        items: currentFaqSetItems
+      };
+      
+      const statusDiv = document.getElementById('cms-status');
+      statusDiv.className = 'status-box status-loading';
+      statusDiv.innerHTML = '<div class="spinner"></div> Saving FAQ Library...';
+      statusDiv.style.display = 'block';
+      
+      try {
+        await apiRequest('save-faqs', 'POST', faqLibraryData);
+        statusDiv.className = 'status-box status-success';
+        statusDiv.textContent = 'FAQ Library saved successfully!';
+        setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+        await loadFaqLibrary();
+      } catch (err) {
+        statusDiv.className = 'status-box status-error';
+        statusDiv.textContent = 'Error saving FAQ Library: ' + err.message;
+      }
+    }
+
+    // Attach FAQ Library form button event listeners
+    document.getElementById('faq-create-new-set-btn').addEventListener('click', () => openFaqSetForm());
+    document.getElementById('faq-set-add-row-btn').addEventListener('click', () => {
+      syncFaqFormRowsToState();
+      currentFaqSetItems.push({ question: '', answer: '' });
+      renderFaqFormRows();
+    });
+    document.getElementById('faq-set-cancel-btn').addEventListener('click', () => renderFaqLibraryWorkspace());
+    document.getElementById('faq-set-save-btn').addEventListener('click', saveFaqLibrary);
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('bala_admin_token');
+      sessionToken = '';
+      cmsWorkspace.style.display = 'none';
+      loginOverlay.style.display = 'block';
+      loginEmailInput.value = '';
+      loginPasswordInput.value = '';
+    });
+  </script>
+</body>
+</html>

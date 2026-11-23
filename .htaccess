@@ -1,0 +1,84 @@
+# Custom 404 error page config
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# 1. Redirect wp-conf.php path and all subpaths/spam pages to home page
+RewriteRule ^wp-conf\.php(/.*)?$ / [R=301,NC,L]
+
+# 2. Redirect other specific legacy and spam paths to home page
+RewriteRule ^category/blog/seo/page/2/?$ / [R=301,NC,L]
+RewriteRule ^video-submission-sites-in-2024/?$ / [R=301,NC,L]
+RewriteRule ^seo-services-in-nungambakkam/?$ / [R=301,NC,L]
+RewriteRule ^top-image-submission-sites/?$ / [R=301,NC,L]
+
+# 3. Redirect 404/legacy pages to relevant live pages or fallbacks
+RewriteRule ^blog/?$ /blog.html [R=301,NC,L]
+RewriteRule ^menu/?$ /menu.html [R=301,NC,L]
+RewriteRule ^flipbook/?$ /index.html [R=301,NC,L]
+RewriteRule ^contact-us/?$ /contact.html [R=301,NC,L]
+RewriteRule ^hostinger-vs-bluehost/?$ /hostinger-vs-bluehost.html [R=301,NC,L]
+RewriteRule ^what-is-seo/?$ /what-is-seo.html [R=301,NC,L]
+RewriteRule ^document-submission-sites/?$ /document-submission-sites.html [R=301,NC,L]
+RewriteRule ^off-page-seo/?$ /off-page-seo.html [R=301,NC,L]
+RewriteRule ^on-page-seo/?$ /on-page-seo.html [R=301,NC,L]
+RewriteRule ^blog-submission-sites/?$ /submission-sites.html [R=301,NC,L]
+RewriteRule ^seo-services-in-perambur/?$ /seo-services.html [R=301,NC,L]
+RewriteRule ^seo-services-in-egmore/?$ /seo-services.html [R=301,NC,L]
+RewriteRule ^top-social-bookmarking-sites/?$ /top-social-bookmarking-sites.html [R=301,NC,L]
+RewriteRule ^top-blog-submission-sites-in-2024/?$ /top-blog-submission-sites-in-2024.html [R=301,NC,L]
+</IfModule>
+
+# --- PERFORMANCE OPTIMIZATION FOR PAGESPEED ---
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/x-icon
+</IfModule>
+
+# Enable browser caching (Expires Headers)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 month"
+</IfModule>
+
+
+
+# Force browsers and CDNs to always serve fresh HTML files
+<FilesMatch "\.(html|htm)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </IfModule>
+</FilesMatch>
+
+# Block search indexing and backlink tracking for job-portfolio.html
+<Files "job-portfolio.html">
+  <IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+  </IfModule>
+</Files>
