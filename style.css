@@ -3838,112 +3838,148 @@ mark, .highlight-text {
    IN-ARTICLE RELATED GUIDES (INTERNAL LINKING)
    ========================================== */
 .related-guides-box {
-  background-color: var(--light-blue);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem 2rem;
-  margin: 2.5rem 0;
-  box-shadow: var(--shadow-sm);
+  background: var(--light-blue, #1e293b) !important;
+  border: 1px solid var(--border-color, #334155) !important;
+  border-radius: var(--radius-lg, 14px) !important;
+  padding: 1.75rem 2rem !important;
+  margin: 3rem 0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25) !important;
+  position: relative !important;
 }
 
 .related-guides-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.75rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  border-bottom: 1px solid var(--border-color, #334155) !important;
+  padding-bottom: 1rem !important;
 }
 
 .related-guides-header h3 {
-  font-size: 1.25rem;
-  margin: 0;
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  color: var(--text-main, #f8fafc) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.related-guides-view-all {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--primary, #3b82f6) !important;
+  text-decoration: none !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: 9999px !important;
+  background: rgba(59, 130, 246, 0.12) !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.related-guides-view-all:hover {
+  background: var(--primary, #3b82f6) !important;
+  color: #ffffff !important;
+  transform: translateX(2px) !important;
 }
 
 .related-guides-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 1.25rem !important;
 }
 
 .related-guide-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
+  background: var(--bg-card, #0f172a) !important;
+  border: 1px solid var(--border-color, #334155) !important;
+  border-radius: var(--radius-md, 10px) !important;
+  padding: 1.35rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  text-decoration: none !important;
+  position: relative !important;
 }
 
 .related-guide-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-4px) !important;
+  border-color: var(--primary, #3b82f6) !important;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2) !important;
 }
 
 .related-guide-tag {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--primary);
-  letter-spacing: 0.5px;
-  margin-bottom: 0.4rem;
+  display: inline-block !important;
+  padding: 0.25rem 0.65rem !important;
+  border-radius: 6px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: var(--primary, #60a5fa) !important;
+  margin-bottom: 0.75rem !important;
+  align-self: flex-start !important;
 }
 
 .related-guide-card h4 {
-  font-size: 0.98rem;
-  line-height: 1.4;
-  margin: 0 0 0.5rem 0;
+  font-size: 1.02rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  margin: 0 0 0.6rem 0 !important;
+  color: var(--text-main, #f8fafc) !important;
 }
 
 .related-guide-card h4 a {
-  color: var(--text-main);
-  text-decoration: none;
-  transition: color 0.2s ease;
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
 }
 
+.related-guide-card:hover h4 a,
 .related-guide-card h4 a:hover {
-  color: var(--primary);
+  color: var(--primary, #3b82f6) !important;
 }
 
 .related-guide-card p {
-  font-size: 0.84rem;
-  color: var(--text-muted);
-  line-height: 1.45;
-  margin-bottom: 0.85rem;
-  flex-grow: 1;
+  font-size: 0.86rem !important;
+  color: var(--text-muted, #94a3b8) !important;
+  line-height: 1.5 !important;
+  margin-bottom: 1.1rem !important;
+  flex-grow: 1 !important;
 }
 
 .related-guide-link {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  text-decoration: none;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  color: var(--primary, #3b82f6) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  text-decoration: none !important;
+  margin-top: auto !important;
+  transition: gap 0.2s ease !important;
 }
 
-.related-guide-link:hover {
-  text-decoration: underline;
+.related-guide-card:hover .related-guide-link {
+  gap: 0.6rem !important;
+  text-decoration: underline !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .related-guides-box {
-    padding: 1.25rem 1rem;
-    margin: 2rem 0;
+    padding: 1.35rem 1rem !important;
+    margin: 2rem 0 !important;
   }
   .related-guides-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
   }
 }
 
