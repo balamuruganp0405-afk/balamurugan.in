@@ -2722,18 +2722,18 @@ ul {
    KEY TAKEAWAYS & HIGHLIGHT CALLOUTS
    ========================================== */
 mark, .highlight-text {
-  background: linear-gradient(120deg, rgba(254, 240, 138, 0.45) 0%, rgba(253, 224, 71, 0.55) 100%);
-  color: inherit;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  font-weight: 600;
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-weight: inherit !important;
 }
 
 [data-theme="dark"] mark,
 [data-theme="dark"] .highlight-text {
-  background: rgba(56, 189, 248, 0.18);
-  color: #e0f2fe;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+  background: transparent !important;
+  color: inherit !important;
+  border-bottom: none !important;
 }
 
 .takeaway-box, .key-points-box {
