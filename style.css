@@ -3834,6 +3834,119 @@ mark, .highlight-text {
 
 
 
+/* ==========================================
+   IN-ARTICLE RELATED GUIDES (INTERNAL LINKING)
+   ========================================== */
+.related-guides-box {
+  background-color: var(--light-blue);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.related-guides-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.related-guides-header h3 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.related-guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.related-guide-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.related-guide-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.related-guide-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.related-guide-card h4 {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+}
+
+.related-guide-card h4 a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.related-guide-card h4 a:hover {
+  color: var(--primary);
+}
+
+.related-guide-card p {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 0.85rem;
+  flex-grow: 1;
+}
+
+.related-guide-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+
+.related-guide-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .related-guides-box {
+    padding: 1.25rem 1rem;
+    margin: 2rem 0;
+  }
+  .related-guides-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 /* Enhanced Multi-Device Overflow Guard */
 html, body {
   overflow-x: hidden !important;
