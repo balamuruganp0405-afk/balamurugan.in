@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
@@ -100,7 +100,23 @@
             <p>If Google's crawlers can't read, render, or find your website pages, even the most exceptional copy won't rank. That is why Technical SEO is the foundation of every successful search strategy. Unlike on-page optimizations which deal with target keywords and articles, technical search optimization focuses on backend structures that affect how crawlers interact with your platform.</p>
             <p>Performing a periodic technical checkup helps you discover indexing blocks, crawl errors, speed bottlenecks, and security issues before they drop your rankings. Here is a step-by-step checklist to perform a comprehensive Technical SEO audit for your site.</p>
 
-            <h2>1. Crawlability & Indexation Analysis</h2>
+            
+            <div class="toc-container">
+              <h4 class="toc-title">Table of Contents</h4>
+              <ul class="toc-list">
+                <li><a href="#1-crawlability-indexation-analysis">1. Crawlability &amp; Indexation Analysis</a></li>
+                <li><a href="#2-url-canonicalization-and-site-architecture">2. URL canonicalization and Site Architecture</a></li>
+                <li><a href="#3-core-web-vitals-and-page-speed-performance">3. Core Web Vitals and Page Speed Performance</a></li>
+                <li>
+                  <a href="#4-schema-markup-structured-data">4. Schema Markup &amp; Structured Data</a>
+                  <ul class="toc-sublist" style="list-style: none; padding-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li style="position: relative; padding-left: 1rem;"><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <h2 id="1-crawlability-indexation-analysis">1. Crawlability & Indexation Analysis</h2>
             <p>Before optimizing page content, you must ensure search engines can actually access your site. You can use Google Search Console (GSC) to monitor index coverage and crawl statistics.</p>
             <ul>
               <li><strong>Check your Robots.txt File</strong>: Ensure your <code>robots.txt</code> file is correctly formatted and is not accidentally blocking key resources (like CSS, JS, or important landing pages) from search crawlers.</li>
@@ -108,7 +124,7 @@
               <li><strong>Analyze Crawl Budget</strong>: For larger sites, clean up low-value links, parameter pages, and duplicate content to make sure Googlebot focuses its crawl limit on priority conversion pages.</li>
             </ul>
 
-            <h2>2. URL canonicalization and Site Architecture</h2>
+            <h2 id="2-url-canonicalization-and-site-architecture">2. URL canonicalization and Site Architecture</h2>
             <p>Site architecture helps search engines understand the relationships between your site's pages and distributes link equity across your domain.</p>
             <ul>
               <li><strong>Use Canonical Tags</strong>: Always define self-referencing canonical tags (<code>&lt;link rel="canonical" href="..."&gt;</code>) on every page to prevent duplicate content issues arising from parameters or URL variations.</li>
@@ -120,7 +136,7 @@
               <p>"A search engine crawler is like a visitor with limited time. If your site has redirect chains or broken link paths, the crawler will leave before indexing your most important content."</p>
             </blockquote>
 
-            <h2>3. Core Web Vitals and Page Speed Performance</h2>
+            <h2 id="3-core-web-vitals-and-page-speed-performance">3. Core Web Vitals and Page Speed Performance</h2>
             <p>Google has officially integrated site speed and user experience into its ranking system via Core Web Vitals (CWV). You can use PageSpeed Insights to measure these benchmarks.</p>
             <ul>
               <li><strong>Largest Contentful Paint (LCP)</strong>: Optimizes the time it takes for your primary layout block to load. Keep this under 2.5 seconds by utilizing server-side caching, modern image formats (WebP), and CDN distribution.</li>
@@ -128,7 +144,7 @@
               <li><strong>Cumulative Layout Shift (CLS)</strong>: Eliminates visual shifts as elements load. Always define width and height attributes on images and reserve space for dynamic ads or banners.</li>
             </ul>
 
-            <h2>4. Schema Markup & Structured Data</h2>
+            <h2 id="4-schema-markup-structured-data">4. Schema Markup & Structured Data</h2>
             <p>Schema markup translates your web page content into a semantic machine-readable language that Google uses to generate rich search snippets.</p>
             <p>Implement structured data markup based on your specific business page model:
               <ul>
@@ -140,12 +156,12 @@
 
             <div class="takeaway-box">
               <h4>Balamurugan's Audit Recommendation</h4>
-              <p>Start your audit by reviewing Google Search Console's "Pages" report. Look for pages flagged as "Crawled - currently not indexed" or "Excluded by noindex tag." This will immediately show you the primary crawler blocks holding back your organic visibility.</p>
+              <p><mark class="highlight-text">Start your audit by reviewing Google Search Console's "Pages" report.</mark> Look for pages flagged as "Crawled - currently not indexed" or "Excluded by noindex tag." This will immediately show you the primary crawler blocks holding back your organic visibility.</p>
             </div>
 
             <!-- FAQ Section -->
             <div class="faq-section" style="margin-top: 3rem; margin-bottom: 2rem;">
-              <h3 class="section-title" style="font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center;">Frequently Asked Questions</h3>
+              <h3 id="frequently-asked-questions" class="section-title" style="font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center;">Frequently Asked Questions</h3>
               <div class="faq-list">
                 <!-- FAQ Item 1 -->
                 <div class="faq-item">
