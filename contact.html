@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <!-- Google Tag Manager -->
@@ -123,30 +123,43 @@
           <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Send a Message</h2>
           <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">Fill out the form below and I'll get back to you with custom strategy insights for your website.</p>
           
-          <form id="contact-form">
+          <form id="contact-form" action="https://formsubmit.co/balamuruganp0405@gmail.com" method="POST">
+            <!-- FormSubmit Configuration -->
+            <input type="hidden" name="_next" value="https://balamurugan.in/thank-you.html">
+            <input type="hidden" name="_subject" value="New Consultation Request | balamurugan.in">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
             <div class="form-group">
-              <input type="text" id="form-name" placeholder="Your Full Name *" required>
+              <input type="text" id="form-name" name="name" placeholder="Your Full Name *" required autocomplete="name">
             </div>
             <div class="form-group">
-              <input type="email" id="form-email" placeholder="Your Email Address *" required>
+              <input type="email" id="form-email" name="email" placeholder="Your Email Address *" required autocomplete="email">
             </div>
             <div class="form-group">
-              <input type="url" id="form-website" placeholder="Your Website URL (e.g. https://yourbrand.com)">
+              <input type="url" id="form-website" name="website" placeholder="Your Website URL (e.g. https://yourbrand.com)" autocomplete="url">
             </div>
             <div class="form-group">
-              <select id="form-service" required>
+              <select id="form-service" name="service" required>
                 <option value="" disabled selected>Select Primary Service Needed *</option>
-                <option value="seo">Search Engine Optimization (SEO)</option>
-                <option value="google-ads">Google Ads & PPC Management</option>
-                <option value="meta-ads">Meta (Facebook & Instagram) Ads</option>
-                <option value="web-design">Conversion Website Design</option>
-                <option value="audit">Full Website & SEO Audit</option>
+                <option value="Search Engine Optimization (SEO)">Search Engine Optimization (SEO)</option>
+                <option value="Google Ads & PPC Management">Google Ads &amp; PPC Management</option>
+                <option value="Meta Ads (Facebook & Instagram)">Meta (Facebook &amp; Instagram) Ads</option>
+                <option value="Conversion Website Design">Conversion Website Design</option>
+                <option value="Full Website & SEO Audit">Full Website &amp; SEO Audit</option>
               </select>
             </div>
             <div class="form-group">
-              <textarea id="form-message" rows="5" placeholder="Tell me about your project, goals, and timeline *" required></textarea>
+              <textarea id="form-message" name="message" rows="5" placeholder="Tell me about your project, goals, and timeline *" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Consultation Request</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%;">Submit Consultation Request</button>
+
+            <div id="form-status" style="margin-top: 1rem; display: none; text-align: center; font-size: 0.95rem;"></div>
+
+            <p style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted); text-align: center;">
+              🔒 Your information is confidential. Prefer immediate response? <a href="https://wa.me/916374191927?text=Hi%20Balamurugan,%20I'd%20like%20to%20enquire%20about%20your%20services." target="_blank" class="inline-link" style="font-weight: 600;">Chat on WhatsApp &rarr;</a>
+            </p>
           </form>
         </div>
       </div>

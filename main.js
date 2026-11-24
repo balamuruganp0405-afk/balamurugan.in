@@ -474,17 +474,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
       // Perform validation check
-      const name = document.getElementById('form-name').value.trim();
-      const email = document.getElementById('form-email').value.trim();
-      const service = document.getElementById('form-service').value;
-      const message = document.getElementById('form-message').value.trim();
+      const nameInput = document.getElementById('form-name');
+      const emailInput = document.getElementById('form-email');
+      const serviceInput = document.getElementById('form-service');
+      const messageInput = document.getElementById('form-message');
       const websiteInput = document.getElementById('form-website');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const service = serviceInput ? serviceInput.value : '';
+      const message = messageInput ? messageInput.value.trim() : '';
       const website = websiteInput ? websiteInput.value.trim() : '';
 
       if (!name || !email || !service || !message) {
+        e.preventDefault();
         alert('Please fill in all required fields.');
         return;
       }
@@ -492,15 +496,28 @@ document.addEventListener('DOMContentLoaded', () => {
       // Basic email regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
+        e.preventDefault();
         alert('Please enter a valid email address.');
         return;
       }
 
       // Disable submit button during load to prevent double submissions
       const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending Message...';
+      const originalBtnText = submitBtn ? submitBtn.textContent : 'Submit';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending Message...';
+      }
+
+      // If running locally via file:// protocol where FormSubmit AJAX is disallowed
+      if (window.location.protocol === 'file:') {
+        e.preventDefault();
+        alert('Thank you, ' + name + '! Your consultation request has been received (Local Demo Mode). In live production, this delivers directly to balamuruganp0405@gmail.com.');
+        window.location.href = 'thank-you.html';
+        return;
+      }
+
+      e.preventDefault();
 
       // Prepare FormSubmit submission data
       const formData = {
@@ -508,7 +525,9 @@ document.addEventListener('DOMContentLoaded', () => {
         email: email,
         service: service,
         website: website,
-        message: message
+        message: message,
+        _subject: 'New Website Inquiry | balamurugan.in',
+        _template: 'table'
       };
 
       fetch('https://formsubmit.co/ajax/balamuruganp0405@gmail.com', {
@@ -524,21 +543,13 @@ document.addEventListener('DOMContentLoaded', () => {
           contactForm.reset();
           window.location.href = 'thank-you.html';
         } else {
-          response.json().then(data => {
-            if (data && data.message) {
-              alert(data.message);
-            } else {
-              alert('Oops! There was a problem submitting your form.');
-            }
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalBtnText;
-          });
+          // Fallback to native form submission if AJAX is gated
+          contactForm.submit();
         }
       })
       .catch(error => {
-        alert('Oops! There was a problem submitting your form. Please check your network connection.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
+        // Fallback to native form submission
+        contactForm.submit();
       });
     });
   }
@@ -560,6 +571,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.textContent = '...';
+        }
+
+        if (window.location.protocol === 'file:') {
+          alert('Thank you for subscribing to our newsletter! (Local Demo Mode)');
+          newsletterForm.reset();
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+          }
+          return;
         }
 
         const formData = {
