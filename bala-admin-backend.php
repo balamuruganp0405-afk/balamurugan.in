@@ -351,7 +351,7 @@ if ($action === 'publish-blog' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $breadcrumb = "Web Design Guides";
     }
     
-    $today = date("F j, yyyy");
+    $today = date("F j, Y");
     
     // Use discover tips page as the template
     $templatePath = __DIR__ . '/google-discover-optimization-tips.html';
@@ -411,18 +411,34 @@ if ($action === 'publish-blog' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Add to blog.html grid
+    // Add to blog.html grid at the top
     $blogHtmlPath = __DIR__ . '/blog.html';
     if (file_exists($blogHtmlPath)) {
         $blogContent = file_get_contents($blogHtmlPath);
         $gridTag = '<div class="grid blogs-brief-grid">';
         if (($pos = strpos($blogContent, $gridTag)) !== false) {
             $insertIdx = $pos + strlen($gridTag);
-            $newCardHtml = "\r\n        <div class=\"blog-card\" data-category=\"$category\">\r\n          <div class=\"blog-img-box\">\r\n            <img decoding=\"async\" src=\"$imgName\" alt=\"$title Cover\" width=\"1024\" height=\"576\" loading=\"lazy\">\r\n          </div>\r\n          <div class=\"blog-content\">\r\n            <div class=\"blog-meta\">\r\n              <span>$today</span>\r\n              <span>&bull; $catName</span>\r\n            </div>\r\n            <h3>$title</h3>\r\n            <p>$description</p>\r\n            <a href=\"{$slug}.html\" class=\"read-more-link\">\r\n              Read Guide\r\n              <svg viewBox=\"0 0 24 24\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"/></svg>\r\n            </a>\r\n          </div>\r\n        </div>";
+            $newCardHtml = "\r\n        <!-- Blog Card: $slug -->\r\n        <div class=\"blog-card\" data-category=\"$category\">\r\n          <div class=\"blog-img-box\">\r\n            <img decoding=\"async\" src=\"$imgName\" alt=\"$title Cover\" width=\"1024\" height=\"576\" loading=\"lazy\">\r\n          </div>\r\n          <div class=\"blog-content\">\r\n            <div class=\"blog-meta\">\r\n              <span>\r\n                <svg viewBox=\"0 0 24 24\"><path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z\"/></svg>\r\n                $today\r\n              </span>\r\n              <span>&bull; $catName</span>\r\n            </div>\r\n            <h3>$title</h3>\r\n            <p>$description</p>\r\n            <a href=\"{$slug}.html\" class=\"read-more-link\">\r\n              Read Guide\r\n              <svg viewBox=\"0 0 24 24\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"/></svg>\r\n            </a>\r\n          </div>\r\n        </div>";
             $blogContent = substr($blogContent, 0, $insertIdx) . $newCardHtml . substr($blogContent, $insertIdx);
             file_put_contents($blogHtmlPath, $blogContent);
-            if (file_exists(__DIR__ . '/Bala Final')) {
+            if (file_exists(__DIR__ . '/Bala Final/blog.html')) {
                 file_put_contents(__DIR__ . '/Bala Final/blog.html', $blogContent);
+            }
+        }
+    }
+
+    // Add to index.html recent blogs grid at the top
+    $indexHtmlPath = __DIR__ . '/index.html';
+    if (file_exists($indexHtmlPath)) {
+        $indexContent = file_get_contents($indexHtmlPath);
+        $indexGridTag = '<div class="grid blogs-brief-grid reveal">';
+        if (($pos = strpos($indexContent, $indexGridTag)) !== false) {
+            $insertIdx = $pos + strlen($indexGridTag);
+            $newIndexCard = "\r\n        <!-- Blog Card: $slug -->\r\n        <div class=\"blog-card\">\r\n          <div class=\"blog-img-box\">\r\n            <img decoding=\"async\" src=\"$imgName\" alt=\"$title Cover\" width=\"1024\" height=\"576\" loading=\"lazy\">\r\n          </div>\r\n          <div class=\"blog-content\">\r\n            <div class=\"blog-meta\">\r\n              <span>\r\n                <svg viewBox=\"0 0 24 24\"><path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z\"/></svg>\r\n                $today\r\n              </span>\r\n              <span>&bull; $catName</span>\r\n            </div>\r\n            <h3>$title</h3>\r\n            <p>$description</p>\r\n            <a href=\"{$slug}.html\" class=\"read-more-link\">\r\n              Read Guide\r\n              <svg viewBox=\"0 0 24 24\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"/></svg>\r\n            </a>\r\n          </div>\r\n        </div>";
+            $indexContent = substr($indexContent, 0, $insertIdx) . $newIndexCard . substr($indexContent, $insertIdx);
+            file_put_contents($indexHtmlPath, $indexContent);
+            if (file_exists(__DIR__ . '/Bala Final/index.html')) {
+                file_put_contents(__DIR__ . '/Bala Final/index.html', $indexContent);
             }
         }
     }

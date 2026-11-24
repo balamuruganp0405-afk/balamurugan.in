@@ -281,14 +281,32 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================== */
   const blogSearch = document.getElementById('blog-search');
   const blogFilterBtns = document.querySelectorAll('.blog-filter-btn');
+  const blogGrid = document.querySelector('.blogs-brief-grid');
   const blogCards = document.querySelectorAll('.blog-card');
 
   if (blogCards.length > 0) {
+    // Automatically sort blog cards in descending date order (newest first)
+    if (blogGrid) {
+      const cardArray = Array.from(blogCards);
+      cardArray.sort((a, b) => {
+        const parseCardDate = (el) => {
+          const span = el.querySelector('.blog-meta span');
+          if (!span) return 0;
+          const text = span.textContent.trim();
+          const d = Date.parse(text);
+          return isNaN(d) ? 0 : d;
+        };
+        return parseCardDate(b) - parseCardDate(a);
+      });
+      cardArray.forEach(card => blogGrid.appendChild(card));
+    }
+
     let currentCategory = 'all';
     let searchQuery = '';
 
     function filterBlogPosts() {
-      blogCards.forEach(card => {
+      const allCards = document.querySelectorAll('.blog-card');
+      allCards.forEach(card => {
         const category = card.getAttribute('data-category');
         const title = card.querySelector('h3').textContent.toLowerCase();
         const desc = card.querySelector('p').textContent.toLowerCase();
