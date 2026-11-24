@@ -1,4 +1,4 @@
-
+﻿
 /* ==========================================
    CSS VARIABLES & DESIGN SYSTEM
    ========================================== */
@@ -1575,12 +1575,34 @@ ul {
   display: flex;
   flex-direction: column;
   transition: var(--transition-normal);
+  position: relative;
+  cursor: pointer;
 }
 
 .blog-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: var(--shadow-xl);
   border-color: rgba(59, 130, 246, 0.3);
+}
+
+.blog-card:hover .blog-img-box img {
+  transform: scale(1.05);
+}
+
+.blog-card:hover h3 {
+  color: var(--primary);
+  transition: var(--transition-fast);
+}
+
+.blog-card .read-more-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  cursor: pointer;
 }
 
 .blog-img-box {

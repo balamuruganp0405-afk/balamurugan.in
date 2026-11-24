@@ -1,4 +1,4 @@
-/* ==========================================
+﻿/* ==========================================
    1. PRELOADER (Runs immediately to prevent blocking)
    ========================================== */
 (function() {
@@ -329,6 +329,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  /* ==========================================
+     10B. CLICKABLE BLOG CARDS (SITE-WIDE)
+     ========================================== */
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.blog-card');
+    if (!card) return;
+    if (e.target.closest('a')) return;
+    const link = card.querySelector('a.read-more-link');
+    if (link && link.href) {
+      window.location.href = link.href;
+    }
+  });
 
   /* ==========================================
      11. TESTIMONIAL CAROUSEL
