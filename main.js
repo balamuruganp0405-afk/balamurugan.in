@@ -1,4 +1,4 @@
-﻿/* ==========================================
+/* ==========================================
    1. PRELOADER (Runs immediately to prevent blocking)
    ========================================== */
 (function() {
@@ -616,4 +616,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+
+  /* ==========================================
+     16. INTERACTIVE TABLE OF CONTENTS (TOC) CONTROLLER
+     ========================================== */
+  document.querySelectorAll('.toc-container').forEach(function(toc) {
+    let header = toc.querySelector('.toc-header');
+    let title = toc.querySelector('.toc-title');
+
+    // If not already enhanced with header wrapper in HTML
+    if (!header && title) {
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'toc-header';
+
+      const leftDiv = document.createElement('div');
+      leftDiv.className = 'toc-header-left';
+
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'toc-icon-badge';
+      iconSpan.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>';
+
+      const badge = document.createElement('span');
+      badge.className = 'toc-badge';
+      badge.textContent = 'Quick Navigation';
+
+      const toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'toc-toggle-btn';
+      toggleBtn.setAttribute('aria-label', 'Toggle Table of Contents');
+      toggleBtn.innerHTML = '<span>Hide</span><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>';
+
+      title.parentNode.insertBefore(headerDiv, title);
+      leftDiv.appendChild(iconSpan);
+      leftDiv.appendChild(title);
+      leftDiv.appendChild(badge);
+      headerDiv.appendChild(leftDiv);
+      headerDiv.appendChild(toggleBtn);
+
+      toggleBtn.addEventListener('click', function() {
+        toc.classList.toggle('collapsed');
+        const span = toggleBtn.querySelector('span');
+        if (span) {
+          span.textContent = toc.classList.contains('collapsed') ? 'Show' : 'Hide';
+        }
+      });
+    } else if (header) {
+      const toggleBtn = header.querySelector('.toc-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+          toc.classList.toggle('collapsed');
+          const span = toggleBtn.querySelector('span');
+          if (span) {
+            span.textContent = toc.classList.contains('collapsed') ? 'Show' : 'Hide';
+          }
+        });
+      }
+    }
+  });
 });
