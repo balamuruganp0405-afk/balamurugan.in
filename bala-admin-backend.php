@@ -380,23 +380,24 @@ if ($action === 'publish-blog' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Add to sitemaps
-    $newHtmlLink = "          <li><a href=\"{$slug}.html\" style=\"color: var(--text-main); text-decoration: none; transition: var(--transition-normal); font-size: 1.05rem;\" onmouseover=\"this.style.color='var(--primary)'\" onmouseout=\"this.style.color='var(--text-main)'\">$title</a></li>";
-    $sitemapsHtml = array(__DIR__ . '/sitemap.html', __DIR__ . '/Bala Final/sitemap.html');
+    $newHtmlLink = "            <li><a href=\"{$slug}.html\">$title</a></li>";
+    $sitemapsHtml = array(__DIR__ . '/sitemap.html', __DIR__ . '/html-sitemap.html', __DIR__ . '/Bala Final/sitemap.html');
     foreach ($sitemapsHtml as $sp) {
         if (file_exists($sp)) {
             $sc = file_get_contents($sp);
             if (strpos($sc, $slug . '.html') === false) {
-                $target = '<li><a href="ai-seo-strategies.html"';
-                if (($pos = strpos($sc, $target)) !== false) {
-                    $lineStartPos = strrpos(substr($sc, 0, $pos), "\n") + 1;
-                    $sc = substr($sc, 0, $lineStartPos) . $newHtmlLink . "\r\n" . substr($sc, $lineStartPos);
+                $targetPattern = '/(<h2[^>]*>Blog Articles & Guides<\/h2>\s*<ul[^>]*>\r?\n)/s';
+                if (preg_match($targetPattern, $sc, $m, PREG_OFFSET_CAPTURE)) {
+                    $insertIdx = $m[1][1] + strlen($m[1][0]);
+                    $sc = substr($sc, 0, $insertIdx) . $newHtmlLink . "\r\n" . substr($sc, $insertIdx);
                     file_put_contents($sp, $sc);
                 }
             }
         }
     }
     
-    $newXmlNode = "\r\n  <url>\r\n    <loc>https://balamurugan.in/{$slug}.html</loc>\r\n    <changefreq>monthly</changefreq>\r\n    <priority>0.6</priority>\r\n  </url>";
+    $todayDate = date('Y-m-d');
+    $newXmlNode = "\r\n  <url>\r\n    <loc>https://balamurugan.in/{$slug}.html</loc>\r\n    <lastmod>{$todayDate}</lastmod>\r\n    <changefreq>monthly</changefreq>\r\n    <priority>0.8</priority>\r\n  </url>";
     $sitemapsXml = array(__DIR__ . '/sitemap.xml', __DIR__ . '/Bala Final/sitemap.xml');
     foreach ($sitemapsXml as $sp) {
         if (file_exists($sp)) {
