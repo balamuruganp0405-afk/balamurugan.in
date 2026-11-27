@@ -29,6 +29,11 @@ RewriteRule ^seo-services-in-perambur/?$ /seo-services.html [R=301,NC,L]
 RewriteRule ^seo-services-in-egmore/?$ /seo-services.html [R=301,NC,L]
 RewriteRule ^top-social-bookmarking-sites/?$ /top-social-bookmarking-sites.html [R=301,NC,L]
 RewriteRule ^top-blog-submission-sites-in-2024/?$ /top-blog-submission-sites-in-2024.html [R=301,NC,L]
+RewriteRule ^sitemap/?$ /sitemap.html [R=301,NC,L]
+RewriteRule ^html-sitemap/?$ /sitemap.html [R=301,NC,L]
+RewriteRule ^html-sitemap\.html$ /sitemap.html [R=301,NC,L]
+RewriteRule ^site-map/?$ /sitemap.html [R=301,NC,L]
+RewriteRule ^site-map\.html$ /sitemap.html [R=301,NC,L]
 </IfModule>
 
 # --- PERFORMANCE OPTIMIZATION FOR PAGESPEED ---
