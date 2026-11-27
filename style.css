@@ -4117,6 +4117,28 @@ mark, .highlight-text {
   }
 }
 
+/* Blog Disclaimer Callout Box */
+.blog-disclaimer {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color, #334155);
+  border-left: 4px solid var(--primary, #3b82f6);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted, #94a3b8);
+}
+
+.blog-disclaimer p {
+  margin: 0;
+}
+
+.blog-disclaimer strong {
+  color: var(--text-main, #f8fafc);
+}
+
 /* Enhanced Multi-Device Overflow Guard */
 html, body {
   overflow-x: hidden !important;
