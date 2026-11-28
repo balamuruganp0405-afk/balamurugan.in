@@ -80,10 +80,3 @@ RewriteRule ^site-map\.html$ /sitemap.html [R=301,NC,L]
     Header set Expires "0"
   </IfModule>
 </FilesMatch>
-
-# Block search indexing and backlink tracking for job-portfolio.html
-<Files "job-portfolio.html">
-  <IfModule mod_headers.c>
-    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
-  </IfModule>
-</Files>

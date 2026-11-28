@@ -31,7 +31,6 @@ $exclude = @(
     'google8d32901e60c424f0.html',
     'menu.html',
     'thank-you.html',
-    'job-portfolio.html', # Specifically blocked from indexing
     'index.html'          # Handled as root /
 )
 
