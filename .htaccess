@@ -5,6 +5,9 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 RewriteBase /
 
+# Redirect legacy job-portfolio URLs to standalone portfolio domain
+RewriteRule ^job-portfolio(?:\.html)?/?$ https://balamurugan.website/ [R=301,NC,L]
+
 # 1. Redirect wp-conf.php path and all subpaths/spam pages to home page
 RewriteRule ^wp-conf\.php(/.*)?$ / [R=301,NC,L]
 
